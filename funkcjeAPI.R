@@ -2,8 +2,12 @@ library(httr)
 library(jsonlite)
 library(dplyr)
 
-puuid <- ''
-api_key <- ''
+keysFile <- file("./keys.txt", "r")
+
+puuid <- readLines(keysFile, n = 1)
+api_key <- readLines(keysFile, n = 1)
+
+close(keysFile)
 
 
 riot_api_request <- function(api_url, api_key) {
@@ -118,8 +122,16 @@ filter_match_timelines <-
 
 #uzycie
 
+list_to_df <- function(matchList){
+  json_string <- toJSON(matchList,pretty = T)
+  parsed_data <- fromJSON(json_string)
+  df <- as.data.frame(do.call(rbind, parsed_data))
+  return(df)
+}
+
 ids <- get_match_ids(api_key, puuid, 100)
-matchList <- get_matches(api_key, ids, 1, 100)
+matchList <- get_matches(api_key, ids, 1, 50)
+df <- list_to_df(matchList[[1]])
 matchTimelineList <- get_matches_timelines(api_key, ids, 1, 100)
 aram <- filter_matches(matchList, 2)
 aram_timelines <- filter_match_timelines(matchTimelineList, aram)
