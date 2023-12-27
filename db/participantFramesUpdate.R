@@ -1,32 +1,32 @@
 # This script is used to update the participantFrames.csv file with new matches for a given player.
 
 ids <- get_match_ids(api_key, puuid, 100)
-matchTimelinesList <- get_matches_timelines(api_key, ids, 1, 20)
+match_timelines_list <- get_matches_timelines(api_key, ids, 1, 20)
 
-existingData <- read.csv("./db/participantFrames.csv")
+existing_data <- read.csv("./db/participantFrames.csv")
 
-for (i in 1:length(matchTimelinesList)) {
-  playerIdx <- which(matchTimelinesList[[i]]$metadata$participants == puuid)
-  matchId <- matchTimelinesList[[i]]$metadata$matchId
-  for(j in 1:length(matchTimelinesList[[i]]$info$frames$participantFrames[[as.character(playerIdx)]]$currentGold)){
-    currentGold <- matchTimelinesList[[i]]$info$frames$participantFrames[[as.character(playerIdx)]]$currentGold[[j]]
-    level <- matchTimelinesList[[i]]$info$frames$participantFrames[[as.character(playerIdx)]]$level[[j]]
-    xp <- matchTimelinesList[[i]]$info$frames$participantFrames[[as.character(playerIdx)]]$xp[[j]]
+for (i in 1:length(match_timelines_list)) {
+  player_idx <- which(match_timelines_list[[i]]$metadata$participants == puuid)
+  match_id <- match_timelines_list[[i]]$metadata$matchId
+  for(j in 1:length(match_timelines_list[[i]]$info$frames$participantFrames[[as.character(player_idx)]]$currentGold)){
+    current_gold <- match_timelines_list[[i]]$info$frames$participantFrames[[as.character(player_idx)]]$currentGold[[j]]
+    level <- match_timelines_list[[i]]$info$frames$participantFrames[[as.character(player_idx)]]$level[[j]]
+    xp <- match_timelines_list[[i]]$info$frames$participantFrames[[as.character(player_idx)]]$xp[[j]]
 
-    newRecord <- data.frame(
-        playerId = puuid,
-        matchId = matchId, 
+    new_record <- data.frame(
+        player_id = puuid,
+        match_id = match_id, 
         minute = j,
-        currentGold = currentGold,
+        current_gold = current_gold,
         level = level,
         xp = xp
     )
 
-    if (!any(duplicated(rbind(existingData, newRecord)))) {
-      existingData <- rbind(existingData, newRecord)
+    if (!any(duplicated(rbind(existing_data, new_record)))) {
+      existing_data <- rbind(existing_data, new_record)
     }
   }
   
 }
 
-write.csv(existingData, "./db/participantFrames.csv", row.names = FALSE)
+write.csv(existing_data, "./db/participantFrames.csv", row.names = FALSE)

@@ -1,49 +1,49 @@
 # This script is used to update the playerMatchStats.csv file with new matches for a given player.
 
 ids <- get_match_ids(api_key, puuid, 100)
-matchList <- get_matches(api_key, ids, 1, 20)
+match_list <- get_matches(api_key, ids, 1, 80)
 
-existingData <- read.csv("./db/playerMatchStats.csv")
+existing_data <- read.csv("./db/playerMatchStats.csv")
 
-for (i in 1:length(matchList)) {
-  playerIdx <- which(matchList[[i]]$metadata$participants == puuid)
-  matchId <- matchList[[i]]$metadata$matchId
-  kills <- matchList[[i]]$info$participants$kills[[playerIdx]]
-  deaths <- matchList[[i]]$info$participants$deaths[[playerIdx]]
-  assists <- matchList[[i]]$info$participants$assists[[playerIdx]]
-  win <- matchList[[i]]$info$participants$win[[playerIdx]]
-  totalDamageDealtToChampions <- matchList[[i]]$info$participants$totalDamageDealtToChampions[[playerIdx]]
-  totalDamageTaken <- matchList[[i]]$info$participants$totalDamageTaken[[playerIdx]]
-  goldEarned <- matchList[[i]]$info$participants$goldEarned[[playerIdx]]
-  championName <- matchList[[i]]$info$participants$championName[[playerIdx]]
-  champLevel <- matchList[[i]]$info$participants$champLevel[[playerIdx]]
-  visionScore <- matchList[[i]]$info$participants$visionScore[[playerIdx]]
-  nexusKills <- matchList[[i]]$info$participants$nexusKills[[playerIdx]]
-  turretKills <- matchList[[i]]$info$participants$turretKills[[playerIdx]]
-  inhibitorKills <- matchList[[i]]$info$participants$inhibitorKills[[playerIdx]]
+for (i in 1:length(match_list)) {
+  player_idx <- which(match_list[[i]]$metadata$participants == puuid)
+  match_id <- match_list[[i]]$metadata$matchId
+  kills <- match_list[[i]]$info$participants$kills[[player_idx]]
+  deaths <- match_list[[i]]$info$participants$deaths[[player_idx]]
+  assists <- match_list[[i]]$info$participants$assists[[player_idx]]
+  win <- match_list[[i]]$info$participants$win[[player_idx]]
+  total_damage_dealt_to_champions <- match_list[[i]]$info$participants$totalDamageDealtToChampions[[player_idx]]
+  total_damage_taken <- match_list[[i]]$info$participants$totalDamageTaken[[player_idx]]
+  gold_earned <- match_list[[i]]$info$participants$goldEarned[[player_idx]]
+  champion_name <- match_list[[i]]$info$participants$championName[[player_idx]]
+  champ_level <- match_list[[i]]$info$participants$champLevel[[player_idx]]
+  vision_score <- match_list[[i]]$info$participants$visionScore[[player_idx]]
+  nexus_kills <- match_list[[i]]$info$participants$nexusKills[[player_idx]]
+  turret_kills <- match_list[[i]]$info$participants$turretKills[[player_idx]]
+  inhibitor_kills <- match_list[[i]]$info$participants$inhibitorKills[[player_idx]]
 
-  newRecord <- data.frame(
-    playerId = puuid,
-    matchId = matchId,
+  new_record <- data.frame(
+    player_id = puuid,
+    match_id = match_id,
     kills = kills,
     deaths = deaths,
     assists = assists,
     win = win,
-    totalDamageDealtToChampions = totalDamageDealtToChampions,
-    totalDamageTaken = totalDamageTaken,
-    goldEarned = goldEarned,
-    champLevel = champLevel,
-    championName = championName,
-    visionScore = visionScore,
-    nexusKills = nexusKills,
-    turretKills = turretKills,
-    inhibitorKills = inhibitorKills
+    total_damage_dealt_to_champions = total_damage_dealt_to_champions,
+    total_damage_taken = total_damage_taken,
+    gold_earned = gold_earned,
+    champ_level = champ_level,
+    champion_name = champion_name,
+    vision_score = vision_score,
+    nexus_kills = nexus_kills,
+    turret_kills = turret_kills,
+    inhibitor_kills = inhibitor_kills
     )
 
-  if (!any(duplicated(rbind(existingData, newRecord)))) {
-    existingData <- rbind(existingData, newRecord)
+  if (!any(duplicated(rbind(existing_data, new_record)))) {
+    existing_data <- rbind(existing_data, new_record)
   }
 
 }
 
-write.csv(existingData, "./db/playerMatchStats.csv", row.names = FALSE)
+write.csv(existing_data, "./db/playerMatchStats.csv", row.names = FALSE)

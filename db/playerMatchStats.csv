@@ -1,4 +1,4 @@
-"playerId","matchId","kills","deaths","assists","win","totalDamageDealtToChampions","totalDamageTaken","goldEarned","champLevel","championName","visionScore","nexusKills","turretKills","inhibitorKills"
+"player_id","match_id","kills","deaths","assists","win","total_damage_dealt_to_champions","total_damage_taken","gold_earned","champ_level","champion_name","vision_score","nexus_kills","turret_kills","inhibitor_kills"
 "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag","EUN1_3514197097",12,11,35,FALSE,74049,49024,18696,18,"Ryze",0,0,1,0
 "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag","EUN1_3512645360",7,1,5,TRUE,16418,13144,10364,15,"Qiyana",9,0,3,1
 "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag","EUN1_3512630539",2,5,2,FALSE,10133,12967,6753,11,"Fizz",8,0,0,0
@@ -296,3 +296,7 @@
 "ymtzWFkDF4IPwAb2NIiUp8G9189sByZDch0PUMeePvymtkqx-uIt0j36OT9advtmv_EhYmyjAjk5Xw","EUN1_3430237119",9,5,10,FALSE,17890,23137,11204,14,"Swain",40,0,1,0
 "ymtzWFkDF4IPwAb2NIiUp8G9189sByZDch0PUMeePvymtkqx-uIt0j36OT9advtmv_EhYmyjAjk5Xw","EUN1_3430224237",0,0,1,FALSE,658,386,1066,3,"Lux",0,0,0,0
 "ymtzWFkDF4IPwAb2NIiUp8G9189sByZDch0PUMeePvymtkqx-uIt0j36OT9advtmv_EhYmyjAjk5Xw","EUN1_3430049708",10,6,14,TRUE,33269,22936,11926,14,"Swain",52,0,0,0
+"n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag","EUN1_3514367874",5,4,5,TRUE,14848,14176,10060,15,"Qiyana",12,0,0,0
+"n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag","EUN1_3514358013",1,7,0,FALSE,4232,14740,4183,9,"Swain",4,0,0,0
+"n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag","EUN1_3514344042",1,6,12,TRUE,21531,16714,8787,14,"Orianna",16,0,0,0
+"n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag","EUN1_3514336735",0,4,13,TRUE,4809,13972,8247,14,"Soraka",55,0,2,0

@@ -4,12 +4,12 @@ library(httr)
 library(jsonlite)
 library(dplyr)
 
-keysFile <- file("./keys.txt", "r")
+keys_file <- file("./keys.txt", "r")
 
-puuid <- readLines(keysFile, n = 1)
-api_key <- readLines(keysFile, n = 1)
+puuid <- readLines(keys_file, n = 1)
+api_key <- readLines(keys_file, n = 1)
 
-close(keysFile)
+close(keys_file)
 
 puuid_cwalina <- "ymtzWFkDF4IPwAb2NIiUp8G9189sByZDch0PUMeePvymtkqx-uIt0j36OT9advtmv_EhYmyjAjk5Xw" 
 puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
@@ -46,9 +46,9 @@ get_matches <- function(api_key,
                         ids,
                         min = 1,
                         max = length(ids)) {
-  matchList <- list()
+  match_list <- list()
   for (i in min:max) {
-    matchList[[i - min + 1]] <-
+    match_list[[i - min + 1]] <-
       riot_api_request(
         paste(
           'https://europe.api.riotgames.com/lol/match/v5/matches/',
@@ -59,7 +59,7 @@ get_matches <- function(api_key,
       )
     
   }
-  return(matchList)
+  return(match_list)
 }
 
 
@@ -67,9 +67,9 @@ get_matches_timelines <- function(api_key,
                                   ids,
                                   min = 1,
                                   max = length(ids)) {
-  matchTimelineList <- list()
+  match_timeline_list <- list()
   for (i in min:max) {
-    matchTimelineList[[i - min + 1]] <-
+    match_timeline_list[[i - min + 1]] <-
       riot_api_request(
         paste(
           'https://europe.api.riotgames.com/lol/match/v5/matches/',
@@ -81,24 +81,24 @@ get_matches_timelines <- function(api_key,
       )
     
   }
-  return(matchTimelineList)
+  return(match_timeline_list)
 }
 
-filter_matches <- function(matchList, type) {
+filter_matches <- function(match_list, type) {
   # type 1=summoners rift,2=ARAM
   filtered <- list()
   c <- 1
   if (type == 1) {
-    for (i in 1:length(matchList)) {
-      if (matchList[[i]]$info$mapId == 11) {
-        filtered[[c]] <- matchList[[i]]
+    for (i in 1:length(match_list)) {
+      if (match_list[[i]]$info$mapId == 11) {
+        filtered[[c]] <- match_list[[i]]
         c <- c + 1
       }
     }
   } else if (type == 2) {
-    for (i in 1:length(matchList)) {
-      if (matchList[[i]]$info$mapId %in% c(12, 13)) {
-        filtered[[c]] <- matchList[[i]]
+    for (i in 1:length(match_list)) {
+      if (match_list[[i]]$info$mapId %in% c(12, 13)) {
+        filtered[[c]] <- match_list[[i]]
         c <- c + 1
       }
     }
@@ -109,14 +109,14 @@ filter_matches <- function(matchList, type) {
 }
 
 filter_match_timelines <-
-  function(matchTimelineList, filtered_matches) {
+  function(match_timeline_list, filtered_matches) {
     # funkcja filtruje timeline zgodnie z typem gier filtered matches - aram, rift
     filtered_timelines <- list()
     c <- 1
     for (i in 1:length(filtered_matches)) {
-      for (j in 1:length(matchTimelineList)) {
-        if (filtered_matches[[i]]$metadata$matchId == matchTimelineList[[j]]$metadata$matchId) {
-          filtered_timelines[[c]] <- matchTimelineList[[j]]
+      for (j in 1:length(match_timeline_list)) {
+        if (filtered_matches[[i]]$metadata$matchId == match_timeline_list[[j]]$metadata$matchId) {
+          filtered_timelines[[c]] <- match_timeline_list[[j]]
           c <- c + 1
         }
       }
@@ -124,8 +124,8 @@ filter_match_timelines <-
     return(filtered_timelines)
   }
 
-list_to_df <- function(matchList){
-  json_string <- toJSON(matchList,pretty = T)
+list_to_df <- function(match_list){
+  json_string <- toJSON(match_list,pretty = T)
   parsed_data <- fromJSON(json_string)
   df <- as.data.frame(do.call(rbind, parsed_data))
   return(df)
