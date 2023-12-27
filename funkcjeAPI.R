@@ -11,6 +11,9 @@ api_key <- readLines(keysFile, n = 1)
 
 close(keysFile)
 
+puuid_cwalina <- "ymtzWFkDF4IPwAb2NIiUp8G9189sByZDch0PUMeePvymtkqx-uIt0j36OT9advtmv_EhYmyjAjk5Xw" 
+puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
 riot_api_request <- function(api_url, api_key) {
   response <- GET(api_url, add_headers("X-Riot-Token" = api_key))
