@@ -108,8 +108,7 @@ filter_matches <- function(match_list, type) {
   return(filtered)
 }
 
-filter_match_timelines <-
-  function(match_timeline_list, filtered_matches) {
+filter_match_timelines <- function(match_timeline_list, filtered_matches) {
     # funkcja filtruje timeline zgodnie z typem gier filtered matches - aram, rift
     filtered_timelines <- list()
     c <- 1
@@ -122,11 +121,4 @@ filter_match_timelines <-
       }
     }
     return(filtered_timelines)
-  }
-
-list_to_df <- function(match_list){
-  json_string <- toJSON(match_list,pretty = T)
-  parsed_data <- fromJSON(json_string)
-  df <- as.data.frame(do.call(rbind, parsed_data))
-  return(df)
 }
