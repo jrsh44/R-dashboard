@@ -11,7 +11,7 @@ api_key <- readLines(keys_file, n = 1)
 
 close(keys_file)
 
-puuid_cwalina <- "ymtzWFkDF4IPwAb2NIiUp8G9189sByZDch0PUMeePvymtkqx-uIt0j36OT9advtmv_EhYmyjAjk5Xw" 
+puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
 puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
 puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
