@@ -69,7 +69,8 @@ f_plot_champions <- function(player_puuid, stat, champ_amount = 10){
             x = ~factor(champion_name), 
             y = ~get(stat), 
             type = 'bar',
-            marker = list(color = paste(color, '88', sep=""), line = list(color = color, width = 2))) %>%
+            marker = list(color = paste(color, '88', sep=""), 
+            line = list(color = color, width = 2))) %>%
         layout(
             xaxis = list(title = "Nazwa cheampiona"),
             yaxis = list(title = y_axis_title))
