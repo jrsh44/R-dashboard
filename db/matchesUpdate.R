@@ -15,13 +15,12 @@ existing_data <- read.csv("./db/matches.csv")
 
 for (i in 1:length(match_list)) {
   match_id <- match_list[[i]]$metadata$matchId
-  game_creation <- match_list[[i]]$info$gameCreation
+  game_creation <- as.character(as.POSIXct(match_list[[i]]$info$gameCreation/1000,origin = "1970-01-01", tz = "UTC"))
   game_mode <- match_list[[i]]$info$gameMode
   map_id <- match_list[[i]]$info$mapId
   paricipants <- match_list[[i]]$metadata$participants
 
   new_record <- data.frame(
-      player_id = puuid,
       match_id = match_id, 
       game_creation = game_creation, 
       game_mode = game_mode,
