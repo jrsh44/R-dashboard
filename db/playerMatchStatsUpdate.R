@@ -1,8 +1,15 @@
 # This script is used to update the playerMatchStats.csv file with new matches for items_created given player.
 
+# API calls
 ids <- get_match_ids(api_key, puuid, 100)
-match_list <- filter_matches(get_matches(api_key, ids,1,90),1)
+match_list_unfiltered <- get_matches(api_key, ids, 1, 20)
 
+# Filters
+match_list <- filter_matches(match_list_unfiltered, 1)
+
+if(length(match_list) == 0){
+  stop("No matches found")
+}
 
 existing_data <- read.csv("./db/playerMatchStats.csv")
 
