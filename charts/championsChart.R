@@ -48,6 +48,7 @@ f_plot_champions <- function(player_puuid, stat, champ_amount = 10){
         y_axis_title <- "Współczynnik zabójstw, śmierci i asyst"
         stats <- player_data %>%
             group_by(champion_name) %>%
+            mutate(deaths = ifelse(deaths == 0, 1, deaths)) %>%
             summarise(kda = (sum(kills) + sum(assists)) / sum(deaths))
     } else if (stat == "winrate"){
         y_axis_title <- "Procent wygranych gier"
