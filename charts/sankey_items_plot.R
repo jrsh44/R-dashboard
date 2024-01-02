@@ -1,12 +1,7 @@
 library(httr)
-library(dplyr)
 library(ggplot2)
-library(ggpubr)
-library(jpeg)
 library(tidyverse)
 library(shiny)
-library(plotly)
-library(patchwork)
 library(networkD3)
 
 #ITEMY

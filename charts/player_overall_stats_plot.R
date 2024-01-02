@@ -1,4 +1,10 @@
-ItemChampGroup <- read.csv("C:/Users/endoa/OneDrive/Dokumenty/TWD/Projekt 2 LOL/git/R-dashboard/db/playerMatchStats.csv")
+library(ggplot2)
+library(tidyverse)
+library(shiny)
+library(plotly)
+
+ItemChampGroup <- read.csv("./db/playerMatchStats.csv")
+
 server <- function(input, output) {
   
   univPlot <- function(df_csv,type,stat){
