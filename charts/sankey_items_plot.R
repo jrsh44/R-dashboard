@@ -10,37 +10,35 @@ library(patchwork)
 library(networkD3)
 
 #ITEMY
-urlItems <- "https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/item.json?fbclid=IwAR2_R3caRPfpTpAd8-5RpbvDjcGW9CJLIfP5yjsQ2xN_B9uS5ay2HYB2U4Q"
-Items <- content(GET(urlItems), "parsed")
+url_items <- "https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/item.json?fbclid=IwAR2_R3caRPfpTpAd8-5RpbvDjcGW9CJLIfP5yjsQ2xN_B9uS5ay2HYB2U4Q"
+items <- content(GET(url_items), "parsed")
 
 #TYPY CHAMPIONÓW
-#championStats <- data.frame(read.csv("~/TWD/Projekt 2 LOL/LOL_champions_stats.csv",sep = ';'))
-championStats <- data.frame(read.csv("~/TWD/Projekt 2 LOL/LOL_champions_stats.csv"))
-colnames(championStats) <- c("xd")
-ChampionStats <- data.frame(name = character(),
-                            type = character(),
-                            playStyle = character())
-for (champ in championStats$xd)
-  ChampionStats <- rbind(ChampionStats, data.frame(name = unlist(strsplit(champ,';'))[1],
-                                                   type = unlist(strsplit(champ,';'))[3],
-                                                   playStyle = unlist(strsplit(champ,';'))[4]))
-ChampionStats <- ChampionStats %>% mutate(name = ifelse(name == "S<e9>raphine","Seraphine",name)) 
-ChampionStats <- ChampionStats %>% mutate(name = ifelse(name == "Wukong","MonkeyKing",name)) 
-ChampionStats <- ChampionStats %>% mutate(type = ifelse(type == "Mage Artillery","Mage",type)) 
-ChampionStats <- ChampionStats %>% mutate(name = ifelse(name == "Miss Fortune","MissFortune",name)) 
-ChampionStats <- ChampionStats %>% mutate(type = ifelse(type == "Controllerer","Controller",type)) 
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'Nilah',type = 'Slayer',playStyle = 'Skirmisher'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'Akshan',type = 'Slayer',playStyle = 'Assassin'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'Vex',type = 'Mage',playStyle = 'Burst'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'Zeri',type = 'Marksman',playStyle = 'Marksman'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'RenataGlasc',type = 'Controller',playStyle = 'Enchanter'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = "Bel'Veth",type = 'Slayer',playStyle = 'Skirmisher'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = "K'Sante",type = 'Tank',playStyle = 'Warden'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = "Milio",type = 'Controller',playStyle = 'Enchanter'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'Naafiri',type = 'Slayer',playStyle = 'Assassin'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'Briar',type = 'Fighter',playStyle = 'Diver'))
-ChampionStats <- rbind(ChampionStats,data.frame(name = 'Hwei',type = 'Mage',playStyle = 'Artillery'))
-#Gnar Mega,Kled & S
+champion_stats <- read.csv("./db/championsStats.csv", sep = ';')
+champion_stats <- champion_stats %>%
+  select(champion_name, class, playstyle) %>%
+  rename(name = champion_name, type = class, playStyle = playstyle) %>%
+  mutate(
+    name = case_when(
+      name == "S<e9>raphine" ~ "Seraphine",
+      name == "Wukong" ~ "MonkeyKing",
+      name == "Miss Fortune" ~ "MissFortune",
+      TRUE ~ name
+    ),
+    type = case_when(
+      type == "Mage Artillery" ~ "Mage",
+      type == "Controllerer" ~ "Controller",
+      TRUE ~ type
+    )
+  )
+
+new_champions <- data.frame(
+  name = c('Nilah', 'Akshan', 'Vex', 'Zeri', 'RenataGlasc', 'Bel\'Veth', 'K\'Sante', 'Milio', 'Naafiri', 'Briar', 'Hwei'),
+  type = c('Slayer', 'Slayer', 'Mage', 'Marksman', 'Controller', 'Slayer', 'Tank', 'Controller', 'Slayer', 'Fighter', 'Mage'),
+  playStyle = c('Skirmisher', 'Assassin', 'Burst', 'Marksman', 'Enchanter', 'Skirmisher', 'Warden', 'Enchanter', 'Assassin', 'Diver', 'Artillery')
+)
+
+champion_stats <- bind_rows(champion_stats, new_champions)
 
 class2Color <- data.frame(class = c("Fighter","Mage","Slayer","Tank","Marksman","Specialist", "Controller"),
                           clolr = c("#E18417","#7C17E1","#E41D1D","#00BF3B","#004AAD","#03F6FF","#EDCC23"))
@@ -180,7 +178,7 @@ legendary_items <- c(
   "Youmuu's Ghostblade"
 )
 
-mythicItems <- c( "Crown of the Shattered Queen",
+mythicitems <- c( "Crown of the Shattered Queen",
                   "Divine Sunderer",
                   "Duskblade of Draktharr",
                   "Echoes of Helia",
@@ -208,8 +206,9 @@ mythicItems <- c( "Crown of the Shattered Queen",
                   "Stridebreaker",
                   "Trinity Force",
                   "Youmuu's Ghostblade")
-mythicItemsDf <- data.frame(
-  mythicItemName = mythicItems,
+
+mythicitemsDf <- data.frame(
+  mythicItemName = mythicitems,
   recomanded = c("Mage",
                  "Fighter",
                  "Slayer",
@@ -239,32 +238,35 @@ mythicItemsDf <- data.frame(
                  "Fighter",
                  "Slayer")
 )
+
 #Lista Itemów na NORMALU
 itemsNormal <- data.frame(itemId = numeric(),
                           itemName = character(),
                           depth = numeric()
 )
-for (item in Items$data) {
+
+for (item in items$data) {
   if (item$maps$'11') {
     itemsNormal <- rbind(itemsNormal, data.frame(itemId = as.numeric(gsub('.png',"",item$image$full)),
                                                  itemName = item$name,
                                                  depth = ifelse(is.null(item$depth),1,item$depth)))
   }
 }
-itemsNormal <- itemsNormal %>% mutate(depth = ifelse(itemId %in% as.numeric(unlist(Items$data$'1001'$into)),3,depth))
+
+itemsNormal <- itemsNormal %>% mutate(depth = ifelse(itemId %in% as.numeric(unlist(items$data$'1001'$into)),3,depth))
 
 #LISTA LEGEND I MITHIC NA NORMALU
-mythicItemsId <- left_join(itemsNormal %>% filter(itemName %in% mythicItems) %>% select(itemId,itemName),mythicItemsDf,join_by('itemName'=='mythicItemName'))
-legendaryItemsNormal <- itemsNormal %>% filter(tolower(itemName) %in% tolower(legendary_items)) %>% mutate(mythic = ifelse(itemName %in% mythicItems,1,0)) 
+mythicitemsId <- left_join(itemsNormal %>% filter(itemName %in% mythicitems) %>% select(itemId,itemName),mythicitemsDf,join_by('itemName'=='mythicItemName'))
+legendaryitemsNormal <- itemsNormal %>% filter(tolower(itemName) %in% tolower(legendary_items)) %>% mutate(mythic = ifelse(itemName %in% mythicitems,1,0)) 
 boots <- c(3006,3009,3020,3047,3111,3117,3158)
 
-ItemChampGroup <- read.csv("C:/Users/endoa/OneDrive/Dokumenty/TWD/Projekt 2 LOL/git/R-dashboard/db/playerMatchStats.csv")
+plotChampClassItem  <-  function(){
 
+  df_csv <- read.csv("./db/playerMatchStats.csv")
 
-plotChampClassItem  <-  function(df_csv){
-  myStats <- df_csv %>% filter(!is.na(itemMythic)) %>% select(champion_name,itemMythic)
-  GroupChampItemTemp <- left_join(myStats,ChampionStats %>% select(name,type),join_by('champion_name'=='name'))
-  GroupChampItem <- left_join(GroupChampItemTemp,mythicItemsId %>% select(itemId,itemName),join_by('itemMythic'=='itemId'))
+  myStats <- df_csv %>% filter(!is.na(mythic_item)) %>% select(champion_name,mythic_item)
+  GroupChampItemTemp <- left_join(myStats,champion_stats %>% select(name,type),join_by('champion_name'=='name'))
+  GroupChampItem <- left_join(GroupChampItemTemp,mythicitemsId %>% select(itemId,itemName),join_by('mythic_item'=='itemId'))
   
   df21 <- GroupChampItem %>% select(champion_name,type) %>% group_by(champion_name,type) %>% count()
   df22 <-  GroupChampItem %>% select(champion_name,itemName) %>% group_by(champion_name,itemName) %>% count()
@@ -278,10 +280,10 @@ plotChampClassItem  <-  function(df_csv){
   nodesTemp <- left_join(data.frame(
     name=c(as.character(links$source), 
            as.character(links$target)) %>% unique()
-  ),ChampionStats %>% select(name,type),join_by('name'=='name')) %>%
-    mutate(type = ifelse(is.na(type) & name %in% unique(ChampionStats$type),
+  ),champion_stats %>% select(name,type),join_by('name'=='name')) %>%
+    mutate(type = ifelse(is.na(type) & name %in% unique(champion_stats$type),
                          name,type)) 
-  nodes <- left_join(nodesTemp,mythicItemsId %>% select(itemName,recomanded),join_by('name'=='itemName')) %>%
+  nodes <- left_join(nodesTemp,mythicitemsId %>% select(itemName,recomanded),join_by('name'=='itemName')) %>%
     mutate(type = ifelse(is.na(type),recomanded,type))
   
   # With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
@@ -299,12 +301,12 @@ plotChampClassItem  <-  function(df_csv){
                      Value = "value", NodeID = "name", 
                      sinksRight=FALSE,NodeGroup = "type",
                      colourScale = JS(tekst2))
-  p 
+  return(p)
 }
 
 server2 <- function(input,output){
   output$plot1 <- renderSankeyNetwork({
-    plotChampClassItem(ItemChampGroup)
+    plotChampClassItem()
   })
   
   output$legend <- renderPlot({
