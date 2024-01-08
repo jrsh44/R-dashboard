@@ -1,12 +1,12 @@
 # This script is used to update the participantEvents.csv file with new matches for a given player.
 
 ids <- get_match_ids(api_key, puuid, 100)
-match_timelines_list <- get_matches_timelines(api_key, ids, 1, 20)
-matchList <- get_matches(api_key, ids, 1, 20)
+match_timelines_list <- get_matches_timelines(api_key, ids, 1, 99)
+match_list <- get_matches(api_key, ids, 1, 99)
 
-matchList <- filter_matches(matchList, 1)
+match_list <- filter_matches(match_list, 1)
 match_timelines_list <-
-  filter_match_timelines(match_timelines_list, matchList)
+  filter_match_timelines(match_timelines_list, match_list)
 
 existing_data <- read.csv("./db/participantEvents.csv")
 
@@ -29,11 +29,11 @@ for (i in 1:length(match_timelines_list)) {
   player_idx <-
     which(match_timelines_list[[i]]$metadata$participants == puuid)
   match_id <- match_timelines_list[[i]]$metadata$matchId
-  champion_name <- matchList[[i]][["info"]][["participants"]][["championName"]][[player_idx]]
-  champion_id <- matchList[[i]][["info"]][["participants"]][["championId"]][[player_idx]]
-  position <- matchList[[i]][["info"]][["participants"]][["teamPosition"]][[player_idx]]
-  team_id <- matchList[[i]][["info"]][["participants"]][["teamId"]][[player_idx]]
-  win <- matchList[[i]][["info"]][["participants"]][["win"]][[player_idx]]
+  champion_name <- match_list[[i]][["info"]][["participants"]][["championName"]][[player_idx]]
+  champion_id <- match_list[[i]][["info"]][["participants"]][["championId"]][[player_idx]]
+  position <- match_list[[i]][["info"]][["participants"]][["teamPosition"]][[player_idx]]
+  team_id <- match_list[[i]][["info"]][["participants"]][["teamId"]][[player_idx]]
+  win <- match_list[[i]][["info"]][["participants"]][["win"]][[player_idx]]
   
   for (j in 1:length(match_timelines_list[[i]][["info"]][["frames"]][["events"]])) {
     if (!is.null(match_timelines_list[[i]][["info"]][["frames"]][["events"]][[j]][['killerId']])) {
