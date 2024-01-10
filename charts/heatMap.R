@@ -30,12 +30,12 @@ f_heat_map <-
     }
     
     data <- data %>% 
-      filter(player_id %in% player_puuid) %>%
-      filter(type %in% stats) %>% 
-      filter(position %in% positions) %>%
-      filter(champion_name %in% champion_names) %>% 
-      filter(win %in% wins) %>% 
-      filter(team_id %in% team_ids)
+      filter(player_id %in% player_puuid,
+             type %in% stats,
+             position %in% positions,
+             champion_name %in% champion_names,
+             win %in% wins,
+             team_id %in% team_ids)
     
     split_into_compartments <- function(vector, n) {
       compartment_range <- 14000/ (n-1)
@@ -71,9 +71,7 @@ f_heat_map <-
       opacity = 0.4,
       height = 416,
       width = 500
-    ) 
-    
-    p <- p %>% layout(
+    ) %>% layout(
       
       images = list(
         source = base64enc::dataURI(file = "./rift2.jpeg"),

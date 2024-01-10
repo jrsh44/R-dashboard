@@ -1,7 +1,6 @@
 library(dplyr)
 library(plotly)
 library(jpeg)
-library(png)
 library(base64enc)
 
 
@@ -18,7 +17,6 @@ f_animated_map <-
     # team_id - c(100,200)
     
     data <- read.csv("./db/participantEvents.csv")
-    img <- "./rift.png"
     
     if (player_puuid == puuid_cwalina) {
       player_name <- "Janek"
@@ -31,12 +29,12 @@ f_animated_map <-
     }
     
     data <- data %>% 
-      filter(player_id %in% player_puuid) %>% 
-      filter(type %in% stats) %>% 
-      filter(position %in% positions) %>%
-      filter(champion_name %in% champion_names) %>% 
-      filter(win %in% wins) %>% 
-      filter(team_id %in% team_ids)
+      filter(player_id %in% player_puuid,
+             type %in% stats,
+             position %in% positions,
+             champion_name %in% champion_names,
+             win %in% wins,
+             team_id %in% team_ids)
   
     #View(data %>% group_by(minute,type) %>% summarize(n=n()))
     plot <- data %>% plot_ly(
@@ -50,9 +48,7 @@ f_animated_map <-
                   size = 3
                   )%>% 
       animation_opts(frame = 2000,
-                     transition=600)
-    
-    plot <- plot %>% layout(
+                     transition=600) %>% layout(
       images = list(
         source = base64enc::dataURI(file = "./rift2.jpeg"),
         x = 0,
