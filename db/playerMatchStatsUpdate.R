@@ -37,9 +37,12 @@ for (i in 1:length(match_list)) {
                   match_list[[i]]$info$participants$item4[[player_idx]],
                   match_list[[i]]$info$participants$item5[[player_idx]],
                   match_list[[i]]$info$participants$item6[[player_idx]])
-   if_mythic_item <- items_created[items_created %in% mythicItemsId$itemId]
+   if_mythic_item <- items_created[items_created %in% mythicItemsId$item_Id]
    mythic_item <- ifelse(length(if_mythic_item)==0,NA,if_mythic_item)
    position <- match_list[[i]]$info$participants$individualPosition[[player_idx]]
+   kill_participation <-  match_list[[i]]$info$participants$challenges$killParticipation[[player_idx]]
+   total_minions_killed <- match_list[[i]]$info$participants$totalMinionsKilled[[player_idx]]
+   game_length <-  match_list[[i]]$info$participants$challenges$gameLength[[player_idx]]
 
   new_record <- data.frame(
     player_id = puuid,
@@ -59,7 +62,10 @@ for (i in 1:length(match_list)) {
     turret_kills = turret_kills,
     inhibitor_kills = inhibitor_kills,
     mythic_item = mythic_item,
-    position = position
+    position = position,
+    kill_participation = kill_participation,
+    total_minions_killed = total_minions_killed,
+    game_length = game_length
     )
 
   if (!any(duplicated(rbind(existing_data, new_record)))) {
