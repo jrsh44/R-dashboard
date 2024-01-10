@@ -1,29 +1,19 @@
 # This script is used to update the participantEvents.csv file with new matches for a given player.
 
+# API calls
 ids <- get_match_ids(api_key, puuid, 100)
-match_timelines_list <- get_matches_timelines(api_key, ids, 1, 99)
-match_list <- get_matches(api_key, ids, 1, 99)
+match_timelines_list_unfiltered <- get_matches_timelines(api_key, ids, 1, 20)
+match_list_unfiltered <- get_matches(api_key, ids, 1, 20)
 
-match_list <- filter_matches(match_list, 1)
-match_timelines_list <-
-  filter_match_timelines(match_timelines_list, match_list)
+# Filters
+match_list <- filter_matches(match_list_unfiltered, 2)
+match_timelines_list <- filter_match_timelines(match_timelines_list_unfiltered, match_list)
+
+if(length(match_timelines_list) == 0){
+  stop("No matches found")
+}
 
 existing_data <- read.csv("./db/participantEvents.csv")
-
-#existing_data <- data.frame(
-#  player_id = vector(),
-#  match_id = vector(),
-#  x = vector(),
-#  y = vector(),
-#  type = vector(),
-#  minute = vector(),
-#  timestamp = vector(),
-# champion_id = vector(),
-#  champion_name = vector(),
-#  position = vector(),
-#  team_id = vector(),
-#  win = vector()
-#)
 
 for (i in 1:length(match_timelines_list)) {
   player_idx <-

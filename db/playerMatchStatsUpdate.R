@@ -1,4 +1,5 @@
 # This script is used to update the playerMatchStats.csv file with new matches for items_created given player.
+library(tidyverse)
 
 # API calls
 ids <- get_match_ids(api_key, puuid, 100)
@@ -12,6 +13,7 @@ if(length(match_list) == 0){
 }
 
 existing_data <- read.csv("./db/playerMatchStats.csv")
+source("./db/items.R")
 
 for (i in 1:length(match_list)) {
   player_idx <- which(match_list[[i]]$metadata$participants == puuid)
@@ -37,7 +39,7 @@ for (i in 1:length(match_list)) {
                   match_list[[i]]$info$participants$item4[[player_idx]],
                   match_list[[i]]$info$participants$item5[[player_idx]],
                   match_list[[i]]$info$participants$item6[[player_idx]])
-   if_mythic_item <- items_created[items_created %in% mythicItemsId$item_Id]
+   if_mythic_item <- items_created[items_created %in% mythic_items_id$item_id]
    mythic_item <- ifelse(length(if_mythic_item)==0,NA,if_mythic_item)
    position <- match_list[[i]]$info$participants$individualPosition[[player_idx]]
    kill_participation <-  match_list[[i]]$info$participants$challenges$killParticipation[[player_idx]]
