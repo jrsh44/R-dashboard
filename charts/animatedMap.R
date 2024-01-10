@@ -1,11 +1,14 @@
-library(dplyr)
-library(plotly)
-library(jpeg)
-library(base64enc)
+# # For testing purposes only
+# library(dplyr)
+# library(plotly)
+# library(jpeg)
+# library(base64enc)
+# df_participant_events <- read.csv("./db/participantEvents.csv")
+# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
-
-f_animated_map <-
-  function(player_puuid,
+f_animated_map <- function(player,
            stats,
            champion_names,
            positions,
@@ -15,20 +18,18 @@ f_animated_map <-
     # champion_name and positions can be vectors length >=1 (string)
     # win - TRUE, FALSE, c(TRUE,FALSE)
     # team_id - c(100,200)
+        
+  if (player == "Cwalina") {
+    player_puuid <- puuid_cwalina
+  } else if (player == "Borycki") {
+    player_puuid <- puuid_borycki
+  } else if (player == "Jarosz") {
+    player_puuid <- puuid_jarosz
+  } else {
+    stop("Error: Invalid player_puuid.")
+  }
     
-    data <- read.csv("./db/participantEvents.csv")
-    
-    if (player_puuid == puuid_cwalina) {
-      player_name <- "Janek"
-    } else if (player_puuid == puuid_borycki) {
-      player_name <- "Bartek"
-    } else if (player_puuid == puuid_jarosz) {
-      player_name <- "Mateusz"
-    } else {
-      stop("Error: Invalid player_puuid.")
-    }
-    
-    data <- data %>% 
+    data <- df_participant_events %>% 
       filter(player_id %in% player_puuid,
              type %in% stats,
              position %in% positions,
@@ -36,7 +37,6 @@ f_animated_map <-
              win %in% wins,
              team_id %in% team_ids)
   
-    #View(data %>% group_by(minute,type) %>% summarize(n=n()))
     plot <- data %>% plot_ly(
       height = 500,
       width = 420,
@@ -50,7 +50,7 @@ f_animated_map <-
       animation_opts(frame = 2000,
                      transition=600) %>% layout(
       images = list(
-        source = base64enc::dataURI(file = "./rift2.jpeg"),
+        source = base64enc::dataURI(file = "./assets/rift2.jpeg"),
         x = 0,
         y = 0,
         sizex = 1,
@@ -68,9 +68,4 @@ f_animated_map <-
     return(plot)
   }
 
-
-
-
-
-f_animated_map(puuid_borycki,c("death","kill"),c("Orianna"),c("MIDDLE"),win=c(T,F),team_id = c(200,100))
-
+# f_animated_map("Borycki",c("death","kill"),c("Orianna"),c("MIDDLE"),win=c(T,F),team_id = c(200,100))

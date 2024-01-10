@@ -1,27 +1,30 @@
-library(dplyr)
-library(plotly)
-library(lubridate)
+# # For testing purposes only
+# library(dplyr)
+# library(plotly)
+# library(lubridate)
+# df_matches <- read.csv("./db/matches.csv")
+# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
-
-f_plot_time <- function(player_puuid){
-    data <- read.csv("./db/matches.csv")
+f_plot_time <- function(player){
 
     # Player names and colors
-    if(player_puuid == puuid_cwalina){
-        player_name <- "Janek"
+    if(player == "Cwalina"){
+        player_puuid <- puuid_cwalina
         color <- "#4F6F52"
-    } else if (player_puuid == puuid_borycki){
-        player_name <- "Bartek"
-        color <- "#9B1D20"
-    } else if (player_puuid == puuid_jarosz){
-        player_name <- "Mateusz"
+    } else if (player == "Borycki"){
+        player_puuid <- puuid_borycki
+        color <- "#F6C86B"
+    } else if (player == "Jarosz"){
+        player_puuid <- puuid_jarosz
         color <- "#86B6F6"
     } else {
         stop("Error: Invalid player_puuid.")
     }
 
     # Proccess data
-    player_data <- data %>%
+    player_data <- df_matches %>%
         filter(paricipants == player_puuid) %>%
         mutate(day_of_week = wday(game_creation, label = TRUE, abbr = FALSE)) %>%
         mutate(hour = hour(game_creation)) %>%
@@ -58,4 +61,4 @@ f_plot_time <- function(player_puuid){
     return(plot)
 }
 
-f_plot_time(puuid_jarosz)
+# f_plot_time(puuid_borycki)
