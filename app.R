@@ -37,8 +37,8 @@ ui <- navbarPage(
     titlePanel("Ogólne statystyki"),
     fluidRow(
             selectInput(inputId = "t1_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-            # selectInput(inputId = "t1_stat",label = "Stat:", choices = c("kills", "deaths", "kda", "winrate", "gamesPlayed")),
-            # plotlyOutput("t1_champions_chart"),
+            selectInput(inputId = "t1_stat",label = "Stat:", choices = c("kills", "deaths", "kda", "winrate", "gamesPlayed")),
+            plotlyOutput("t1_champions_chart"),
             plotlyOutput("t1_time_played_chart")
     )
   ),
@@ -85,10 +85,9 @@ server <- function(input, output) {
 
 
     # Zakładka 1
-    # output$t1_champions_chart <- renderPlotly({
-    #   f_plot_champions(input$t1_player, input$t1_stat)
-    # })
-
+    output$t1_champions_chart <- renderPlotly({
+      f_plot_champions(input$t1_player, input$t1_stat)
+    })
 
     output$t1_time_played_chart <- renderPlotly({
       f_plot_time(input$t1_player)
