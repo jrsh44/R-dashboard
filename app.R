@@ -7,6 +7,7 @@ library(shiny)
 library(plotly)
 library(httr)
 library(networkD3)
+library(shinythemes)
 
 df_participant_events <- read.csv("./db/participantEvents.csv")
 df_matches <- read.csv("./db/matches.csv")
@@ -28,18 +29,17 @@ source("./charts/timePlayChart.R")
 
 
 ui <- navbarPage(
-
-  # Zakładka 0 - error
-  tabPanel("XDD"),
+  theme = shinytheme("flatly"), 
+  "League of Legends - analise",
   
   # Zakładka 1
   tabPanel("Ogólne",
     titlePanel("Ogólne statystyki"),
     fluidRow(
-            selectInput(inputId = "t1_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-            selectInput(inputId = "t1_stat",label = "Stat:", choices = c("kills", "deaths", "kda", "winrate", "gamesPlayed")),
-            plotlyOutput("t1_champions_chart"),
-            plotlyOutput("t1_time_played_chart")
+      selectInput(inputId = "t1_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+      selectInput(inputId = "t1_stat",label = "Stat:", choices = c("kills", "deaths", "kda", "winrate", "gamesPlayed")),
+      plotlyOutput("t1_champions_chart"),
+      plotlyOutput("t1_time_played_chart")
     )
   ),
   
