@@ -28,12 +28,9 @@ f_heat_map <- function(player,
   } else {
     stop("Error: Invalid player.")
   }
-
-    data <- read.csv("./db/participantEvents.csv")
-
     
-    data <- data %>% 
-      filter(player_id %in% player_puuid,
+    data <- df_participant_events %>% 
+      dplyr::filter(player_id %in% player_puuid,
              type %in% stats,
              position %in% positions,
              champion_name %in% champion_names,

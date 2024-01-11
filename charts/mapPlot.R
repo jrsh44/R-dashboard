@@ -31,7 +31,7 @@ f_map <- function(player,
   }
      
     data <- df_participant_events %>% 
-      filter(player_id %in% player_puuid,
+      dplyr::filter(player_id %in% player_puuid,
       type %in% stats,
       position %in% positions,
       champion_name %in% champion_names,

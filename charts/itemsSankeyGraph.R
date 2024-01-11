@@ -23,10 +23,8 @@ f_items_sankey_graph  <-  function(player){
     stop("Error: Invalid player_puuid.")
   }
 
-  data = df_player_match_stats
-
-  myStats <- data %>% 
-    filter(player_puuid == player_id, !is.na(mythic_item)) %>% 
+  myStats <- df_player_match_stats %>% 
+    dplyr::filter(player_puuid == player_id, !is.na(mythic_item)) %>% 
     select(champion_name,mythic_item)
 
   GroupChampItemTemp <- left_join(myStats,champion_stats %>% select(name,type),join_by('champion_name'=='name'))

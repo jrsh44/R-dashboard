@@ -25,7 +25,7 @@ f_plot_time <- function(player){
 
     # Proccess data
     player_data <- df_matches %>%
-        filter(paricipants == player_puuid) %>%
+        dplyr::filter(paricipants == player_puuid) %>%
         mutate(day_of_week = wday(game_creation, label = TRUE, abbr = FALSE)) %>%
         mutate(hour = hour(game_creation)) %>%
         group_by(day_of_week, hour) %>%

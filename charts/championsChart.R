@@ -22,11 +22,9 @@ f_plot_champions <- function(player, stat, champ_amount = 10){
         stop("Error: Invalid player_puuid.")
     }
 
-    data = df_player_match_stats
-
     # Filter data
-    player_data <- data %>%
-        filter(player_id == player_puuid)
+    player_data <- df_player_match_stats %>%
+        dplyr::filter(player_id == player_puuid)
 
     # Filter out ${champ_amount} champions that were played the most
     top_champions <- player_data %>%
