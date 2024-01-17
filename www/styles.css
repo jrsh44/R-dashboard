@@ -1,0 +1,89 @@
+:root {
+  --blue_1: #cdfafa;
+  --blue_2: #0ac8b9;
+  --blue_3: #0297ab;
+  --blue_4: #005a82;
+  --blue_5: #0a323c;
+  --blue_6: #091428;
+  --blue_7: #0a1428;
+  --gold_1: #f0e6d2;
+  --gold_2: #c8aa6e;
+  --gold_3: #c89b3c;
+  --gold_4: #785a28;
+  --gold_5: #463714;
+  --gold_6: #32281e;
+  --grey_1: #a09b8c;
+  --grey_1_5: #5b5a56;
+  --grey_2: #3c3c41;
+  --grey_3: #1e2328;
+  --grey_cool: #1e282d;
+  --hextech_black: #010a13;
+  --bg-color: #020a13;
+  --bg-color-light: #171d24;
+}
+
+.app-bg {
+  background-color: var(--blue_2);
+}
+
+.typoH1 {
+  font-family: "Beaufort";
+  font-size: 40pt;
+  line-height: 42pt;
+  color: var(--gold_1);
+}
+
+.typoH2 {
+  font-family: "Beaufort";
+  font-size: 28pt;
+  line-height: 32pt;
+  color: var(--gold_2);
+}
+
+.typoH3 {
+  font-family: "Beaufort";
+  font-size: 23pt;
+  line-height: 28pt;
+}
+
+.typoH4 {
+  font-family: "Beaufort";
+  font-size: 18pt;
+  line-height: 22pt;
+}
+
+.typoH5 {
+  font-family: "Beaufort";
+  font-size: 14pt;
+  line-height: 18pt;
+  color: var(--gold_3);
+}
+
+.typoBodyBold {
+  font-family: "SpiegelBold";
+  font-size: 14pt;
+  line-height: 20pt;
+}
+
+.typoBody {
+  font-family: "SpiegelRegular";
+  font-size: 14pt;
+  line-height: 20pt;
+  color: var(--grey_1_5);
+}
+
+.typoBodySmall {
+  font-family: "SpiegelRegular";
+  font-size: 11pt;
+  line-height: 16pt;
+}
+
+.container-fluid {
+  background-color: var(--bg-color);
+}
+
+.navbar {
+  background-color: var(--blue_6);
+  border-bottom: 5px solid var(--gold_4);
+  margin-bottom: 0px;
+}
