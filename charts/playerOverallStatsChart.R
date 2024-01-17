@@ -15,11 +15,6 @@ df_item_champ <- df_player_match_stats %>%
     select(player_id, champion_name),
   by = c('player_id','position','champion_name'))
 
-summoner <- data.frame(name = c("Cwalina","Borycki","Jarosz"),
-                       puuid = c( "uUj9Y1pGLa9_zICoJji5ea3m5hKsDrj1zdKY2GmtdROp8DY5y__gcNo-2c6k-AhJbtQhUQs2gtviaQ",
-                                  "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA",
-                                  "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"))
-
 f_stats_position_reactive <- function(player_name, summoner_position, id1, type, compare = "brak"){
 
   if (player_name == "Cwalina") {
