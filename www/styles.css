@@ -1,3 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  font-family: "SpiegelRegular";
+  font-size: 14pt;
+  line-height: 20pt;
+  color: var(--grey_1_5);
+}
+
 :root {
   --blue_1: #cdfafa;
   --blue_2: #0ac8b9;
@@ -20,10 +34,6 @@
   --hextech_black: #010a13;
   --bg-color: #020a13;
   --bg-color-light: #171d24;
-}
-
-.app-bg {
-  background-color: var(--blue_2);
 }
 
 .typoH1 {
@@ -79,13 +89,73 @@
 }
 
 .container-fluid {
+  display: flex;
+  width: 100%;
   background-color: var(--bg-color);
 }
 
+.tab-content {
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+/* NAVBAR */
 .navbar {
-  background-color: var(--blue_6);
-  border-bottom: 5px solid var(--gold_4);
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--bg-color);
+  height: 80px;
+  border: 0px;
+  padding-bottom: 20px;
   margin-bottom: 0px;
+}
+
+.navbar-header {
+  display: flex;
+  padding: 0px 16px;
+  width: 40%;
+}
+
+.navbar-brand {
+  font-family: "Beaufort";
+  font-size: 28pt;
+  line-height: 32pt;
+  color: var(--gold_1);
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 16px;
+  width: 60%;
+}
+
+.navbar-nav > li > a {
+  color: var(--gold_2);
+  font-family: "Beaufort";
+  font-size: 14pt;
+  line-height: 20pt;
+  padding: 10px 30px;
+  border-bottom: 2px solid var(--gold_3);
+  border-right: 2px solid var(--gold_3);
+}
+
+.navbar-nav > li > a:hover {
+  color: var(--grey_2);
+  border-bottom: 2px solid var(--gold_2);
+  border-right: 2px solid var(--gold_2);
+  transition: 0.4s;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+  color: var(--gold_1);
+  background-image: linear-gradient(to left, var(--gold_6), var(--bg-color));
+  border-bottom: 2px solid var(--gold_1);
+  border-right: 2px solid var(--gold_1);
+  transition: 0.4s;
 }
 
 /* SELECT BUTTON */
