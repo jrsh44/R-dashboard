@@ -49,7 +49,7 @@ f_map <- function(player,
       width = 500
     ) %>% layout(
       images = list(
-        source = base64enc::dataURI(file = "./assets/rift2.jpeg"),
+        source = base64enc::dataURI(file = "./www/assets/rift2.jpeg"),
         x = 0,
         y = 0,
         sizex = 1,

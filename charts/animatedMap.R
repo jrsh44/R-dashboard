@@ -50,7 +50,7 @@ f_animated_map <- function(player,
       animation_opts(frame = 2000,
                      transition=600) %>% layout(
       images = list(
-        source = base64enc::dataURI(file = "./assets/rift2.jpeg"),
+        source = base64enc::dataURI(file = "./www/assets/rift2.jpeg"),
         x = 0,
         y = 0,
         sizex = 1,
