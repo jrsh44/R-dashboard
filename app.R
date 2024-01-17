@@ -113,7 +113,8 @@ server <- function(input, output) {
     # Zakładka 3
 
     output$t3_dynamic_input <- renderUI({
-    myStatsPosition <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
+    myStatsPosition <- df_item_champ %>% 
+      dplyr::filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
     if (nrow(myStatsPosition)==0) {
       selectInput(inputId = "id1",
                   label = "Champion",
@@ -125,7 +126,8 @@ server <- function(input, output) {
   
   output$t3_dynamic_input2 <- renderUI({
     if (input$type=="Density") {
-      myStatsPosition <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
+      myStatsPosition <- df_item_champ %>% 
+        filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
       if (nrow(myStatsPosition)==0) {
         selectInput(inputId = "compare",
                     label = "Compare with:",

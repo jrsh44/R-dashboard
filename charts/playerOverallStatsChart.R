@@ -7,90 +7,114 @@
 # puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
 # puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
-#do POPRAWY
-filterForMatches <- read.csv("./db/playerMatchStats.csv") %>% group_by(player_id,position,champion_name) %>% count() %>% filter(n > 1) %>% select(player_id,champion_name)
-df_item_champ <- inner_join(read.csv("./db/playerMatchStats.csv"),filterForMatches,by = c('player_id','position','champion_name'))
+df_item_champ <- df_player_match_stats %>%
+ inner_join(df_player_match_stats %>% 
+    group_by(player_id, position, champion_name) %>%
+    count() %>%
+    dplyr::filter(n > 1) %>% 
+    select(player_id, champion_name),
+  by = c('player_id','position','champion_name'))
 
 summoner <- data.frame(name = c("Cwalina","Borycki","Jarosz"),
                        puuid = c( "uUj9Y1pGLa9_zICoJji5ea3m5hKsDrj1zdKY2GmtdROp8DY5y__gcNo-2c6k-AhJbtQhUQs2gtviaQ",
                                   "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA",
                                   "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"))
 
-f_stats_position_reactive <- function(summoner_name,summoner_position,id1,type,compare = "brak"){
-  myStatsPosition1 <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% summoner_name) %>% select(puuid)),position==summoner_position)
-  if (type=="Density") {
-    if (id1=="All") {
-      myStatsPosition2 <- myStatsPosition1 %>%
-        filter(position==summoner_position) %>% mutate(compare = "All") 
-    } else if (id1=="None"){
-      myStatsPosition2 <- data.frame() %>% mutate(compare = "None") 
+f_stats_position_reactive <- function(player_name, summoner_position, id1, type, compare = "brak"){
+
+  if (player_name == "Cwalina") {
+    player_puuid <- puuid_cwalina
+  } else if (player_name == "Borycki") {
+    player_puuid <- puuid_borycki
+  } else if (player_name == "Jarosz") {
+    player_puuid <- puuid_jarosz
+  } else {
+    stop("Error: Invalid player_puuid.")
+  }
+
+  df_stats_position <- df_item_champ %>% 
+    dplyr::filter(player_id == player_puuid)
+
+  if (type == "Density") {
+    if (id1 == "All") {
+      df_stats_position <- df_stats_position %>%
+        dplyr::filter(position == summoner_position) %>% 
+        mutate(compare = "All")
+    } else if (id1 == "None") {
+      df_stats_position <- data.frame() %>%
+        mutate(compare = "None")
     } else {
-        myStatsPosition2 <- df_item_champ %>%
-          filter(player_id == as.vector(summoner %>% filter(name %in% summoner_name) %>% select(puuid)),position==summoner_position) %>% mutate(compare = ifelse(champion_name==id1,id1,compare))
-        if (compare=="Don't") {
-          myStatsPosition2 <- myStatsPosition2 %>% filter(champion_name==id1)
-        } else if (compare!="All") {
-          myStatsPosition2 <- myStatsPosition2 %>% filter(champion_name %in% c(id1,compare))
-        }
+      df_stats_position <- df_stats_position %>%
+        dplyr::filter(position == summoner_position) %>%
+        mutate(compare = ifelse(champion_name == id1, id1, compare))
+      if (compare == "Don't") {
+        df_stats_position <- df_stats_position %>% 
+          dplyr::filter(champion_name == id1)
+      } else if (compare != "All") {
+        df_stats_position <- df_stats_position %>% 
+          dplyr::filter(champion_name %in% c(id1, compare))
+      }
     }
   } else {
-      if (id1=='All'){
-        myStatsPosition2temp <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% summoner_name) %>% select(puuid)),position==summoner_position)
-      } else {
-        myStatsPosition2temp <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% summoner_name) %>% select(puuid)),position==summoner_position,champion_name==id1)
-      }
-      View(myStatsPosition2temp)
-      myStatsPosition2 <- myStatsPosition2temp %>% arrange(match_start_time) %>% mutate(n = 1:nrow(myStatsPosition2temp))
-    } 
-  return(myStatsPosition2)
+    df_stats_position <- df_stats_position %>% 
+      dplyr::filter(position == summoner_position)
+    if (id1 != "All") {
+      df_stats_position <- df_stats_position %>% 
+        dplyr::filter(champion_name == id1)
+    }
+    df_stats_position <- df_stats_position %>% 
+      arrange(match_start_time) %>% 
+      mutate(n = 1:nrow(df_stats_position))
+  }
+  return(df_stats_position)
 }
   
-f_overall_stats_plot <- function(summoner_name,summoner_position,id1,type,stat,compare = "brak"){
-  myStatsPosition2 <- f_stats_position_reactive(summoner_name,summoner_position,id1,type,compare)
-  if (nrow(myStatsPosition2)!=0) {
+f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat, compare = "brak"){
+  df_stats_position <- f_stats_position_reactive(player_name, summoner_position, id1, type, compare)
+  if (nrow(df_stats_position) != 0) {
     if (type=="Density") {
       if (stat=="DmgPerDeath") {
-        gg <- ggplot(data = myStatsPosition2 %>% mutate(deaths = ifelse(deaths==0,1,deaths)),aes(x = total_damage_dealt_to_champions/deaths)) +
+        gg <- ggplot(data = df_stats_position %>% mutate(deaths = ifelse(deaths==0,1,deaths)),aes(x = total_damage_dealt_to_champions/deaths)) +
           geom_density(aes(fill = compare),alpha = 0.5) + 
           labs() 
         
       } else if (stat=="kill_participation") {
-        gg <- ggplot(data = myStatsPosition2,aes(x = kill_participation)) +
+        gg <- ggplot(data = df_stats_position,aes(x = kill_participation)) +
           geom_density(aes(fill = compare),alpha = 0.5) + 
           labs() 
         
       } else  if (stat=="MinionsPerMinute") {
-        gg <- ggplot(data = myStatsPosition2,aes(x = total_minions_killed/(game_length/60))) +
+        gg <- ggplot(data = df_stats_position,aes(x = total_minions_killed/(game_length/60))) +
           geom_density(aes(fill = compare),alpha = 0.5) + 
           labs() 
         
       } else {
-        gg <- ggplot(data = myStatsPosition2 %>% mutate(deaths = ifelse(deaths==0,1,deaths)),aes(x = (kills+assists)/deaths)) +
+        gg <- ggplot(data = df_stats_position %>% mutate(deaths = ifelse(deaths==0,1,deaths)),aes(x = (kills+assists)/deaths)) +
           geom_density(aes(fill = compare),alpha = 0.5) + 
           labs() 
       }
       gg <- ggplotly(gg)
     } else if (type=="Chronologically") {
       if(stat=="DmgPerDeath"){
-        gg <- plot_ly(data = myStatsPosition2,
+        gg <- plot_ly(data = df_stats_position,
                       x = ~n,
                       y = ~total_damage_dealt_to_champions/deaths,
                       type = 'scatter',
                       mode = 'lines+markers')
       } else if (stat=="kill_participation") {
-        gg <- plot_ly(data = myStatsPosition2,
+        gg <- plot_ly(data = df_stats_position,
                       x = ~n,
                       y = ~kill_participation,
                       type = 'scatter',
                       mode = 'lines+markers')
       } else if (stat=="MinionsPerMinute"){
-        gg <- plot_ly(data = myStatsPosition2,
+        gg <- plot_ly(data = df_stats_position,
                       x = ~n,
                       y = ~total_minions_killed/(game_length/60),
                       type = 'scatter',
                       mode = 'lines+markers')
       } else {
-        gg <- plot_ly(data = myStatsPosition2 %>% mutate(deaths = ifelse(deaths==0,1,deaths)),
+        gg <- plot_ly(data = df_stats_position %>% mutate(deaths = ifelse(deaths==0,1,deaths)),
                       x = ~n,
                       y = ~(kills + assists)/deaths,
                       type = 'scatter',
@@ -103,7 +127,6 @@ f_overall_stats_plot <- function(summoner_name,summoner_position,id1,type,stat,c
   }
   return(gg)
 }
-
 
 
 # server <- function(input, output) {
