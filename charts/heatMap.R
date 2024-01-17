@@ -1,12 +1,14 @@
-library(dplyr)
-library(plotly)
-library(jpeg)
-library(png)
-library(base64enc)
+# # For testing purposes only
+# library(dplyr)
+# library(plotly)
+# library(jpeg)
+# library(png)
+# library(base64enc)
+# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
-
-f_heat_map <-
-  function(player_puuid,
+f_heat_map <- function(player,
            stats,
            champion_names,
            positions,
@@ -16,21 +18,19 @@ f_heat_map <-
     # champion_name and positions can be vectors length >=1 (string)
     # win - TRUE, FALSE, c(TRUE,FALSE)
     # team_id - c(100,200)
+        
+  if (player == "Cwalina") {
+    player_puuid <- puuid_cwalina
+  } else if (player == "Borycki") {
+    player_puuid <- puuid_borycki
+  } else if (player == "Jarosz") {
+    player_puuid <- puuid_jarosz
+  } else {
+    stop("Error: Invalid player.")
+  }
     
-    data <- read.csv("./db/participantEvents.csv")
-    
-    if (player_puuid == puuid_cwalina) {
-      player_name <- "Janek"
-    } else if (player_puuid == puuid_borycki) {
-      player_name <- "Bartek"
-    } else if (player_puuid == puuid_jarosz) {
-      player_name <- "Mateusz"
-    } else {
-      stop("Error: Invalid player_puuid.")
-    }
-    
-    data <- data %>% 
-      filter(player_id %in% player_puuid,
+    data <- df_participant_events %>% 
+      dplyr::filter(player_id %in% player_puuid,
              type %in% stats,
              position %in% positions,
              champion_name %in% champion_names,
@@ -49,17 +49,16 @@ f_heat_map <-
     
     n <- 25
     
-    data <-
-      data %>% mutate(x_round = split_into_compartments(x, n),
-                      y_round = split_into_compartments(y, n))
-    
-    hdata <- data %>% group_by(y_round,x_round) %>% 
-      summarise(count = n()) %>% 
-      filter(!is.na(x_round))
+    data <- data %>% 
+        mutate(x_round = split_into_compartments(x, n),
+              y_round = split_into_compartments(y, n)) %>% 
+        group_by(y_round,x_round) %>% 
+        summarise(count = n()) %>% 
+        filter(!is.na(x_round))
     m <- matrix(0, nrow = n, ncol = n)
 
-    for (i in 1:nrow(hdata)) {
-      m[n+1-as.numeric(hdata[i,2]),n+1-as.numeric(hdata[(i),1])] <- as.numeric(hdata[i,3])
+    for (i in 1:nrow(data)) {
+      m[n+1-as.numeric(data[i,2]),n+1-as.numeric(data[(i),1])] <- as.numeric(data[i,3])
     }
     
     palette <- colorRampPalette(c("darkblue","yellow","orange","red"))
@@ -72,9 +71,8 @@ f_heat_map <-
       height = 416,
       width = 500
     ) %>% layout(
-      
       images = list(
-        source = base64enc::dataURI(file = "./rift2.jpeg"),
+        source = base64enc::dataURI(file = "./assets/rift2.jpeg"),
         x = 0,
         y = 0,
         sizex = 1,
@@ -93,8 +91,4 @@ f_heat_map <-
     return(p)
   }
 
-
-
-
-f_heat_map(puuid_borycki,c("kill","death"),c("Orianna"),c("MIDDLE"),win=c(T,F),team_id = c(200,100))
-
+# f_heat_map("Borycki",c("kill","death"),c("Orianna"),c("MIDDLE"),win=c(T,F),team_id = c(200,100))

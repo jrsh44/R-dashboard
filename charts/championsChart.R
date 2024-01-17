@@ -1,26 +1,30 @@
-library(plotly)
-library(dplyr)
+# # For testing purposes only
+# library(plotly)
+# library(dplyr)
+# df_player_match_stats <- read.csv("./db/playerMatchStats.csv")
+# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
-f_plot_champions <- function(player_puuid, stat, champ_amount = 10){
-    data <- read.csv("./db/playerMatchStats.csv")
+f_plot_champions <- function(player, stat, champ_amount = 10){
 
     # Player names and colors
-    if(player_puuid == puuid_cwalina){
-        player_name <- "Janek"
+    if(player == "Cwalina"){
+        player_puuid <- puuid_cwalina
         color <- "#4F6F52"
-    } else if (player_puuid == puuid_borycki){
-        player_name <- "Bartek"
+    } else if (player == "Borycki"){
+        player_puuid <- puuid_borycki
         color <- "#F6C86B"
-    } else if (player_puuid == puuid_jarosz){
-        player_name <- "Mateusz"
+    } else if (player == "Jarosz"){
+        player_puuid <- puuid_jarosz
         color <- "#86B6F6"
     } else {
         stop("Error: Invalid player_puuid.")
     }
 
     # Filter data
-    player_data <- data %>%
-        filter(player_id == player_puuid)
+    player_data <- df_player_match_stats %>%
+        dplyr::filter(player_id == player_puuid)
 
     # Filter out ${champ_amount} champions that were played the most
     top_champions <- player_data %>%
@@ -79,5 +83,5 @@ f_plot_champions <- function(player_puuid, stat, champ_amount = 10){
     return(plot_champions)
 }
 
-# Possible values: "kills", "deaths", "kda", "winrate", "gamesPlayed"
-f_plot_champions(puuid_jarosz, "kda")
+# # # Possible values: "kills", "deaths", "kda", "winrate", "gamesPlayed"
+# f_plot_champions("Jarosz", "kda")
