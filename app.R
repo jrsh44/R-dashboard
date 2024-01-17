@@ -21,9 +21,10 @@ source("./charts/timePlayChart.R")
 
 
 ui <- navbarPage(
-  theme = shinytheme("flatly"), 
-  "League of Legends - analise",
-  
+  tags$head(
+    tags$title("League of Legends Stats"),
+    tags$link(rel = "icon", href = "assets/favicon.png"),
+  ), 
   # Zakładka 1
   tabPanel("Ogólne",
     titlePanel("Ogólne statystyki"),
