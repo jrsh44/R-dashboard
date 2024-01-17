@@ -24,6 +24,7 @@ ui <- navbarPage(
   tags$head(
     tags$title("League of Legends Stats"),
     tags$link(rel = "icon", href = "assets/favicon.png"),
+    tags$link(rel = "stylesheet", href = "fonts.css"),
   ), 
   # Zakładka 1
   tabPanel("Ogólne",
