@@ -19,65 +19,71 @@ source("./charts/mapPlot.R")
 source("./charts/playerOverallStatsChart.R")
 source("./charts/timePlayChart.R")
 
+
+
 ui <- navbarPage(
-  tags$head(
-    tags$title("League of Legends Stats"),
-    tags$link(rel = "icon", href = "assets/favicon.png"),
-    tags$link(rel = "stylesheet", href = "fonts.css"),
-    tags$link(rel = "stylesheet", href = "styles.css"),
-  ), 
+  title = "League of Legend - stats",
+
   # Zakładka 1
   tabPanel("Ogólne",
-    tags$div(class = "app-background",
-      tags$div(class = "typoH1", "Ogólne statystyki"),
-      tags$div(class = "typoH5", "Wybierz gracza i statystykę"),
-      selectInput(inputId = "t1_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-      selectInput(inputId = "t1_stat",label = "Stat:", choices = c("kills", "deaths", "kda", "winrate", "gamesPlayed")),
-      plotlyOutput("t1_champions_chart"),
-      plotlyOutput("t1_time_played_chart")
-    )
+     tags$head(
+       tags$title("League of Legends Stats"),
+       tags$link(rel = "icon", href = "assets/favicon.png"),
+       tags$link(rel = "stylesheet", href = "fonts.css"),
+       tags$link(rel = "stylesheet", href = "styles.css"),
+     ),
+    tags$div(class = "typoH1", "Ogólne statystyki"),
+    tags$div(class = "typoH5", "Wybierz gracza i statystykę"),
+    selectInput(inputId = "t1_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+    selectInput(inputId = "t1_stat",label = "Stat:", choices = c("kills", "deaths", "kda", "winrate", "gamesPlayed")),
+    plotlyOutput("t1_champions_chart"),
+    plotlyOutput("t1_time_played_chart")
   ),
   
   # Zakładka 2
   tabPanel("Mapy",
-    tags$div(class = "app-background",
-      tags$div(class = "typoH1", "Przebieg meczów"),
-      fluidRow(
-        selectInput(inputId = "t2_map_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-        plotlyOutput("t2_heat_map"),
-        plotlyOutput("t2_map"),
-        plotlyOutput("t2_animated_map")
-      ) 
+    tags$div(class = "typoH1", "Przebieg meczów"),
+    fluidRow(
+      selectInput(inputId = "t2_map_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+      plotlyOutput("t2_heat_map"),
+      plotlyOutput("t2_map"),
+      plotlyOutput("t2_animated_map")
     )
   ),
   
   # Zakładka 3
   tabPanel("Szczegółowe",
-    tags$div(class = "app-background",
-      tags$div(class = "typoH1", "Statystyki szczegółowe"),
-      fluidRow(
-        column(4,
-          selectInput(inputId = "summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-          selectInput(inputId = "Position",label = "Position",
-                      choices = c("TOP","JUNGLE","MIDDLE","BOTTOM","UTILITY"),selected = "BOTTOM"),
-          uiOutput("t3_dynamic_input"),
-          uiOutput("t3_dynamic_input2"),
-          selectInput(inputId = "type", label = "Type:",choices = c("Density","Chronologically"))),
-        column(4,
-          plotlyOutput("t3_dmg_per_death"),
-          plotlyOutput("t3_minions_per_minute")
-        ),
-        column(4,
-          plotlyOutput("t3_kill_participation"),
-          plotlyOutput("t3_kda"))
+    tags$div(class = "typoH1", "Statystyki szczegółowe"),
+    fluidRow(
+      column(4,
+        selectInput(inputId = "summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+        selectInput(inputId = "Position",label = "Position",
+                    choices = c("TOP","JUNGLE","MIDDLE","BOTTOM","UTILITY"),selected = "BOTTOM"),
+        uiOutput("t3_dynamic_input"),
+        uiOutput("t3_dynamic_input2"),
+        selectInput(inputId = "type", label = "Type:",choices = c("Density","Chronologically"))),
+      column(4,
+        plotlyOutput("t3_dmg_per_death"),
+        plotlyOutput("t3_minions_per_minute")
       ),
-      fluidRow(titlePanel("Itemki"),
-        selectInput(inputId = "sankey_summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-        sankeyNetworkOutput("t3_sankey"),
-        plotOutput("t3_sankey_legend")
-      )
+      column(4,
+        plotlyOutput("t3_kill_participation"),
+        plotlyOutput("t3_kda"))
+    ),
+    fluidRow(titlePanel("Itemki"),
+      selectInput(inputId = "sankey_summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+      sankeyNetworkOutput("t3_sankey"),
+      plotOutput("t3_sankey_legend")
     )
-  )
+  ),
+
+  # ABOUT PAGE
+  tabPanel("About",
+    tags$div(class = "about-container", 
+    tags$div(class = "typoH5", "League of Legends - Analise"),
+    tags$div(class = "typoH1", "Informacje o projekcie"),
+    )
+  ),
 )
 
 server <- function(input, output) {
