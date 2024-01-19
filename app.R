@@ -19,25 +19,42 @@ source("./charts/mapPlot.R")
 source("./charts/playerOverallStatsChart.R")
 source("./charts/timePlayChart.R")
 
-
-
 ui <- navbarPage(
   title = "League of Legend - stats",
 
   # Zakładka 1
   tabPanel("Ogólne",
-     tags$head(
-       tags$title("League of Legends Stats"),
-       tags$link(rel = "icon", href = "assets/favicon.png"),
-       tags$link(rel = "stylesheet", href = "fonts.css"),
-       tags$link(rel = "stylesheet", href = "styles.css"),
-     ),
-    tags$div(class = "typoH1", "Ogólne statystyki"),
-    tags$div(class = "typoH5", "Wybierz gracza i statystykę"),
-    selectInput(inputId = "t1_player",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-    selectInput(inputId = "t1_stat",label = "Stat:", choices = c("kills", "deaths", "kda", "winrate", "gamesPlayed")),
-    plotlyOutput("t1_champions_chart"),
-    plotlyOutput("t1_time_played_chart")
+      tags$head(
+        tags$title("League of Legends Stats"),
+        tags$link(rel = "icon", href = "assets/favicon.png"),
+        tags$link(rel = "stylesheet", href = "fonts.css"),
+        tags$link(rel = "stylesheet", href = "styles.css"),
+      ),
+      tags$div(class = "tab1-wrapper",
+        tags$div(class = "tab1-title-text",
+          tags$div(class = "typoH1", "Ogólne statystyki"),
+          tags$img(class = "tab1-decorator-lg", src = "assets/decorator-hr-lg.png")
+        ),
+        tags$div(class = "tab1-champ-container", 
+          tags$div(class = "tab1-champ-wrapper",
+            tags$div(class = "tab1-title-text",
+              tags$div(class = "typoH2", "Porównanie championów"),
+              tags$div(class = "typoH5", "którymi gramy"),
+              tags$img(class = "tab1-decorator", src = "assets/decorator-hr.png"),
+            ),
+            tags$div(class = "typoBodyBold", "Obecnie w grze dostępnych jest ponad 150 postaci podzielonych na różne kategorie, takie jak zabójcy, strażnicy, magowie czy strzelcy. Stojąc przed takim szerokim wyborem istotne staje się określenie, którym bohaterem radzimy sobie najlepiej,"),
+            tags$div(class = "typoBody", textOutput("t1_stat_desc")),
+            tags$div(class = "tab1-champ-buttons", 
+              selectInput(inputId = "t1_player",label = "Gracz:", choices = c("Cwalina","Borycki","Jarosz")),
+              selectInput(inputId = "t1_stat",label = "Statystyka:", choices = c("Zabójstwa", "Śmierci", "Współczynnik KDA", "Współczynnik zwycięstw", "Liczba gier")),
+            ),
+          ),
+          tags$div(class = "tab1-champ-wrapper",
+            plotlyOutput("t1_champions_chart"),
+          ),
+        )
+      # plotlyOutput("t1_time_played_chart")
+     )
   ),
   
   # Zakładka 2
@@ -82,6 +99,7 @@ ui <- navbarPage(
     tags$div(class = "about-container", 
     tags$div(class = "typoH5", "League of Legends - Analise"),
     tags$div(class = "typoH1", "Informacje o projekcie"),
+    tags$img(class = "tab4-decorator-lg", src = "assets/decorator-hr-lg.png"),
     )
   ),
 )
@@ -89,6 +107,20 @@ ui <- navbarPage(
 server <- function(input, output) {
 
     # Zakładka 1
+    output$t1_stat_desc <- renderText({
+      if (input$t1_stat == "Zabójstwa") {
+        "Liczba zabójstwa informuje o tym, ilu przeciwników udało nam się pokonać podczas rozgrywki. Im więcej zabójstw, tym silniejszy mamy wpływ na przebieg gry."
+      } else if (input$t1_stat == "Śmierci") {
+        "Liczba śmierci informuje o tym, ile razy bohater został pokonany przez przeciwników."
+      } else if (input$t1_stat == "Współczynnik KDA") {
+        "Współczynnik KDA to suma zabójstw i asyst podzielona przez liczbę śmierci. Jest to miara efektywności gracza w walce."
+      } else if (input$t1_stat == "Współczynnik zwycięstw") {
+        "Współczynnik zwycięstw odzwierciedla procent wygranych gier spośród wszystkich rozegranych."
+      } else if (input$t1_stat == "Liczba gier") {
+        "Liczba gier pozwala określić nie tylko popularność postaci, ale również doświadczenie gracza w jej obsłudze."
+      }
+    })
+
     output$t1_champions_chart <- renderPlotly({
       f_plot_champions(input$t1_player, input$t1_stat)
     })

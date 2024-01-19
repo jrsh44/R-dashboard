@@ -6,7 +6,8 @@
 # puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
 # puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
-f_plot_champions <- function(player, stat, champ_amount = 10){
+f_plot_champions <- function(player, stat, champ_amount = 5){
+    
 
     # Player names and colors
     if(player == "Cwalina"){
@@ -14,7 +15,7 @@ f_plot_champions <- function(player, stat, champ_amount = 10){
         color <- "#4F6F52"
     } else if (player == "Borycki"){
         player_puuid <- puuid_borycki
-        color <- "#F6C86B"
+        color <- "#f6bb45"
     } else if (player == "Jarosz"){
         player_puuid <- puuid_jarosz
         color <- "#86B6F6"
@@ -38,32 +39,32 @@ f_plot_champions <- function(player, stat, champ_amount = 10){
         filter(champion_name %in% top_champions)
 
     # Prepare stat to plot and set y axis title
-    if (stat == "kills") {
+    if (stat == "Zabójstwa") {
         y_axis_title <- "Ilość zabójstw"
         stats <- player_data %>% 
             group_by(champion_name) %>% 
-            summarise(kills = sum(kills)) 
-    } else if (stat == "deaths") {
+            summarise(target = sum(kills)) 
+    } else if (stat == "Śmierci") {
         y_axis_title <- "Ilość śmierci"
         stats <- player_data %>% 
             group_by(champion_name) %>% 
-            summarise(deaths = sum(deaths))
-    } else if (stat == "kda"){
-        y_axis_title <- "Współczynnik zabójstw, śmierci i asyst"
+            summarise(target = sum(deaths))
+    } else if (stat == "Współczynnik KDA"){
+        y_axis_title <- "Współczynnik KDA"
         stats <- player_data %>%
             group_by(champion_name) %>%
             mutate(deaths = ifelse(deaths == 0, 1, deaths)) %>%
-            summarise(kda = (sum(kills) + sum(assists)) / sum(deaths))
-    } else if (stat == "winrate"){
+            summarise(target = (sum(kills) + sum(assists)) / sum(deaths))
+    } else if (stat == "Współczynnik zwycięstw"){
         y_axis_title <- "Procent wygranych gier"
         stats <- player_data %>%
             group_by(champion_name) %>%
-            summarise(winrate = sum(win)/n())
-    } else if (stat == "gamesPlayed"){
+            summarise(target = sum(win)/n())
+    } else if (stat == "Liczba gier"){
         y_axis_title <- "Ilość rozegranych gier"
         stats <- player_data %>%
             group_by(champion_name) %>%
-            summarise(gamesPlayed = n())
+            summarise(target = n())
     } else {
         stop("Error: Invalid stat.")
     }
@@ -72,16 +73,22 @@ f_plot_champions <- function(player, stat, champ_amount = 10){
     plot_champions <- stats %>%
         plot_ly(
             x = ~factor(champion_name), 
-            y = ~get(stat), 
-            type = 'bar',
-            marker = list(color = paste(color, '88', sep=""), 
+            y = ~target, 
+            type = "bar",
+            marker = list(color = paste(color, "88", sep=""), 
             line = list(color = color, width = 2))) %>%
-        layout(
-            xaxis = list(title = "Nazwa cheampiona"),
-            yaxis = list(title = y_axis_title))
+    layout(
+        xaxis = list(title = "Nazwa championa", color = "#c8aa6e"),
+        yaxis = list(title = y_axis_title, color = "#c8aa6e", showgrid = TRUE, gridcolor = "#c8aa6e35", zeroline = TRUE, showline = TRUE),
+        paper_bgcolor = "rgba(0,0,0,0)",
+        plot_bgcolor = "rgba(0,0,0,0)",
+        font = list(
+            size = 14,
+            color = "#c8aa6e"
+        )
+    )
 
     return(plot_champions)
 }
 
-# # # Possible values: "kills", "deaths", "kda", "winrate", "gamesPlayed"
 # f_plot_champions("Jarosz", "kda")
