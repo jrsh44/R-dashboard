@@ -15,10 +15,10 @@ f_plot_time <- function(player){
         color <- "#4F6F52"
     } else if (player == "Borycki"){
         player_puuid <- puuid_borycki
-        color <- "#F6C86B"
+        color <- "#c99b3f"
     } else if (player == "Jarosz"){
         player_puuid <- puuid_jarosz
-        color <- "#86B6F6"
+        color <- "#005a82"
     } else {
         stop("Error: Invalid player_puuid.")
     }
@@ -37,12 +37,10 @@ f_plot_time <- function(player){
         )
     
     player_data <- player_data %>%
-        full_join(all_combinations, by = c("day_of_week", "hour")) %>%
-        mutate(gamesPlayed = ifelse(is.na(gamesPlayed), 0, gamesPlayed))
+        full_join(all_combinations, by = c("day_of_week", "hour"))
 
     color_scale <- list(
-        c(0, "#FFFFFF"),
-        c(0.01, "#e2e2e2"),
+        c(0, "#f0e6d2"),
         c(1, color)
     )
 
@@ -53,10 +51,31 @@ f_plot_time <- function(player){
         x = ~hour,
         z = ~gamesPlayed, 
         colorscale = color_scale,
-        type = "heatmap") %>%
+        type = "heatmap",
+        showscale = FALSE,
+        opacity = 0.85) %>%
     layout(
-            xaxis = list(title = "Godzina rozpoczęcia gry", dtick = 2, range = c(0, 23), showline = TRUE, linecolor = 'black'), 
-            yaxis = list(title = "", showline = TRUE, linecolor = 'black'))
+        xaxis = list(
+            title = "Godzina rozpoczęcia gry", 
+            dtick = 2, 
+            range = c(-0.5, 23.5), 
+            showgrid = TRUE, 
+            gridcolor = "#c8aa6e35"
+        ), 
+        yaxis = list(
+            title = "", 
+            showgrid = TRUE, 
+            gridcolor = "#c8aa6e35", 
+            tickfont = list(size = 14)
+        ),
+        paper_bgcolor = "rgba(0,0,0,0)",
+        plot_bgcolor = "rgba(0,0,0,0)",
+        font = list(
+            size = 14,
+            color = "#c8aa6e"
+        ),
+        showlegend = FALSE
+    )
 
     return(plot)
 }
