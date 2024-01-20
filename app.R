@@ -1,13 +1,13 @@
 library(jpeg)
 library(png)
+library(shinythemes)
 library(base64enc)
-library(ggplot2)
-library(tidyverse)
-library(shiny)
-library(plotly)
 library(httr)
 library(networkD3)
-library(shinythemes)
+library(ggplot2)
+library(tidyverse)
+library(plotly)
+library(shiny)
 
 source("./db/variables.R")
 source("./db/items.R")
@@ -32,21 +32,21 @@ ui <- navbarPage(
       tags$link(rel = "stylesheet", href = "styles.css"),
     ),
     tags$div(
-      class = "tab1-wrapper",
+      class = "tab-wrapper",
       tags$div(
-        class = "tab1-title-text",
+        class = "tab-title-text",
         tags$div(class = "typoH1", "Ogólne statystyki"),
-        tags$img(class = "tab1-decorator-lg", src = "assets/decorator-hr-lg.png")
+        tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
       tags$div(
-        class = "tab1-champ-container",
+        class = "tab-champ-container",
         tags$div(
-          class = "tab1-champ-wrapper",
+          class = "tab-champ-wrapper",
           tags$div(
-            class = "tab1-title-text",
+            class = "tab-title-text",
             tags$div(class = "typoH2", "Porównanie championów"),
             tags$div(class = "typoH5", "którymi gramy"),
-            tags$img(class = "tab1-decorator", src = "assets/decorator-hr.png"),
+            tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
           ),
           tags$div(
             class = "typoBodyBold",
@@ -54,7 +54,7 @@ ui <- navbarPage(
           ),
           tags$div(class = "typoBody", textOutput("t1_stat_desc")),
           tags$div(
-            class = "tab1-champ-buttons",
+            class = "tab-champ-buttons",
             selectInput(
               inputId = "t1_player",
               label = "Gracz:",
@@ -73,7 +73,7 @@ ui <- navbarPage(
             ),
           ),
         ),
-        tags$div(class = "tab1-champ-wrapper",
+        tags$div(class = "tab-champ-wrapper",
                  plotlyOutput("t1_champions_chart"), ),
       )
       # plotlyOutput("t1_time_played_chart")
@@ -85,21 +85,21 @@ ui <- navbarPage(
     "Mapy",
     tags$head(),
     tags$div(
-      class = "tab1-wrapper",
+      class = "tab-wrapper",
       tags$div(
-        class = "tab1-title-text",
+        class = "tab-title-text",
         tags$div(class = "typoH1", "Przebieg gier"),
-        tags$img(class = "tab1-decorator-lg", src = "assets/decorator-hr-lg.png")
+        tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
       tags$div(
-        class = "tab1-champ-container",
+        class = "tab-map-container",
         tags$div(
-          class = "tab1-champ-wrapper",
+          class = "tab-map-info-wrapper",
           tags$div(
-            class = "tab1-title-text",
+            class = "tab-title-text",
             tags$div(class = "typoH2", "Aktywność na mapie"),
             tags$div(class = "typoH5", "w zależności od pozycji"),
-            tags$img(class = "tab1-decorator", src = "assets/decorator-hr.png"),
+            tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
           ),
           tags$div(
             class = "typoBodyBold",
@@ -107,7 +107,7 @@ ui <- navbarPage(
           ),
           tags$div(class = "typoBody", textOutput("t2_desc")),
           tags$div(
-            class = "tab1-champ-buttons",
+            class = "tab-map-buttons",
             selectInput(
                       inputId = "t2_map_type",
                       label = "Typ:",
@@ -119,10 +119,11 @@ ui <- navbarPage(
                       label = "Summoner:",
                       choices = c("Cwalina", "Borycki", "Jarosz"),
                       selected = "Borycki"
-                    ),uiOutput("t2_dynamic_input")
+                    ),
+            uiOutput("t2_dynamic_input")
             ),
           ),
-        tags$div(class = "tab1-champ-wrapper",
+        tags$div(class = "tab-map-wrapper",
                  plotlyOutput("t2_map"), ),
         ),
       )
