@@ -90,7 +90,8 @@ f_animated_map <- function(player,
         linecolor = 'rgba(0,0,0,0)'
       ),
       showlegend = FALSE
-    )
+    ) %>%
+    config(displayModeBar = FALSE)
     return(plot)
   }
 

@@ -125,7 +125,8 @@ f_heat_map <- function(player,
       )
     )
     
-  )
+  ) %>%
+    config(displayModeBar = FALSE)
   
   return(p)
 }

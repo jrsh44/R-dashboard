@@ -86,7 +86,8 @@ f_plot_champions <- function(player, stat, champ_amount = 5){
             size = 14,
             color = "#c8aa6e"
         )
-    )
+    ) %>%
+    config(displayModeBar = FALSE)
 
     return(plot_champions)
 }

@@ -93,7 +93,9 @@ f_map <- function(player,
           color ="#c8aa6e"
         )
       )
-    )
+    ) %>%
+    config(displayModeBar = FALSE)
+
     return(plot)
   }
 

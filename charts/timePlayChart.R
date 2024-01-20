@@ -56,7 +56,8 @@ f_plot_time <- function(player){
         type = "heatmap") %>%
     layout(
             xaxis = list(title = "Godzina rozpoczęcia gry", dtick = 2, range = c(0, 23), showline = TRUE, linecolor = 'black'), 
-            yaxis = list(title = "", showline = TRUE, linecolor = 'black'))
+            yaxis = list(title = "", showline = TRUE, linecolor = 'black')) %>%
+    config(displayModeBar = FALSE)
 
     return(plot)
 }
