@@ -28,18 +28,28 @@ f_animated_map <- function(player,
   } else {
     stop("Error: Invalid player_puuid.")
   }
-    
-    data <- df_participant_events %>% 
-      filter(player_id %in% player_puuid,
-             type %in% stats,
-             position %in% positions,
-             champion_name %in% champion_names,
-             win %in% wins,
-             team_id %in% team_ids)
+  if(champion_names=="All"){
+    data <- df_participant_events %>%
+      dplyr::filter(
+        player_id %in% player_puuid,
+        type %in% stats,
+        position %in% positions,
+        win %in% wins,
+        team_id %in% team_ids
+      )}else{
+        data <- df_participant_events %>%
+          dplyr::filter(
+            player_id %in% player_puuid,
+            type %in% stats,
+            position %in% positions,
+            champion_name %in% champion_names,
+            win %in% wins,
+            team_id %in% team_ids)
+      }
   
     plot <- data %>% plot_ly(
-      height = 500,
-      width = 420,
+      height =400,
+      width = 336,
       type = "scatter",
       mode = "markers"
     ) %>%  add_markers(x = ~x,
@@ -61,8 +71,24 @@ f_animated_map <- function(player,
         yanchor = "bottom",
         layer = "below"
       ),
-      xaxis = list(showgrid = F,showticklabels = F,title='',range(0,14000)), 
-      yaxis = list(showgrid =F,showticklabels =F,title = "",range(0,14000)),
+      paper_bgcolor = 'rgba(0,0,0,0)',
+      plot_bgcolor = 'rgba(0,0,0,0)',
+      xaxis = list(
+        title = '',
+        showgrid = FALSE,
+        showticklabels = FALSE,
+        range(0, 14000),
+        tickfont = list(color = 'rgba(0,0,0,0)'),
+        linecolor = 'rgba(0,0,0,0)'
+      ),
+      yaxis = list(
+        title = '',
+        showgrid = FALSE,
+        showticklabels = FALSE,
+        range(0, 14000),
+        tickfont = list(color = 'rgba(0,0,0,0)'),
+        linecolor = 'rgba(0,0,0,0)'
+      ),
       showlegend = FALSE
     )
     return(plot)
