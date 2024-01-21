@@ -118,7 +118,8 @@ f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat
                        scale_x_continuous(expand = c(0, 0), limits = c(0, NA),) + 
                        scale_y_continuous(expand = c(0, 0), limits = c(0, NA)),
                      hovertemplate = "<i>xd</i>") %>%
-        layout(legend=list(title=list(text='Comparison:',font = list(color = "#c8aa6e"))))
+        layout(legend=list(title=list(text='Comparison:',font = list(color = "#c8aa6e")))) %>%
+        config(staticPlot = TRUE)
       ##882a2e
       #values = c("#0ac8b9","#005a82"))) 
     } else if (type=="Chronologically") {
@@ -189,7 +190,7 @@ f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat
       paper_bgcolor = "rgba(0,0,0,0)",
       plot_bgcolor = "rgba(0,0,0,0)"
       ) %>%
-    config(displayModeBar = FALSE, staticPlot = TRUE)
+    config(displayModeBar = FALSE)
 
   return(gg)
 }
