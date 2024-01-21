@@ -121,8 +121,15 @@ rect {
   width: 100%;
 }
 
+.js-plotly-plot .plotly,
+.js-plotly-plot .plotly div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* TAB 1  */
-.tab1-wrapper {
+.tab-wrapper {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -131,7 +138,7 @@ rect {
   gap: 48px;
 }
 
-.tab1-title-text {
+.tab-title-text {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,7 +146,8 @@ rect {
   gap: 4px;
 }
 
-.tab1-champ-container {
+.tab-map-container,
+.tab-champ-container {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -147,24 +155,24 @@ rect {
   background-color: var(--bg-color-light);
 }
 
-.tab1-champ-wrapper {
+.tab-champ-wrapper {
   display: flex;
   width: 48%;
   flex-direction: column;
   gap: 12px;
 }
 
-.tab1-champ-buttons {
+.tab-champ-buttons {
   display: flex;
   justify-content: space-evenly;
 }
 
-.tab1-decorator-lg {
+.tab-decorator-lg {
   display: flex;
   width: 450px;
 }
 
-.tab1-decorator {
+.tab-decorator {
   display: flex;
   width: 400px;
 }
@@ -202,6 +210,65 @@ rect {
 }
 
 /* TAB 2  */
+
+.tab-map-info-wrapper {
+  display: flex;
+  width: 55%;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tab-map-wrapper {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab-map-buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.tab-map-buttons > div {
+  width: 30% !important;
+}
+
+.slider-grip-rect {
+  stroke: var(--gold_2) !important;
+  stroke-width: 2px !important;
+  fill: var(--blue_6) !important;
+}
+
+.slider-tick-rect {
+  fill: var(--gold_5) !important;
+}
+
+.slider-label {
+  font-family: "Beaufort" !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: var(--gold_2) !important;
+}
+
+.slider-rail-rect {
+  fill: var(--gold_1) !important;
+}
+
+.updatemenu-item-text {
+  font-family: "Marcellus", serif !important;
+  fill: var(--gold_1) !important;
+  font-size: 15px !important;
+  font-weight: bold !important;
+  letter-spacing: 1px !important;
+  padding: 5px 15px !important;
+}
+
+.updatemenu-item-rect {
+  stroke: var(--gold_2) !important;
+  stroke-width: 2px !important;
+}
 
 /* TAB 3  */
 
@@ -270,6 +337,7 @@ rect {
 }
 
 /* SELECT BUTTON */
+.updatemenu-button,
 .selectize-control.single .selectize-input,
 .selectize-control.single .selectize-input input {
   cursor: url("assets/cursor-pointer.png"), auto;
@@ -309,6 +377,7 @@ rect {
   transition: 0.2s;
 }
 
+.updatemenu-button,
 .selectize-input.items.full.has-options.has-items:active {
   color: var(--gold_1);
   text-shadow: none;

@@ -29,14 +29,24 @@ f_map <- function(player,
   } else {
     stop("Error: Invalid player_puuid.")
   }
-     
-    data <- df_participant_events %>% 
-      dplyr::filter(player_id %in% player_puuid,
-      type %in% stats,
-      position %in% positions,
-      champion_name %in% champion_names,
-      win %in% wins,
-      team_id %in% team_ids)
+  if(champion_names=="All"){
+    data <- df_participant_events %>%
+      dplyr::filter(
+        player_id %in% player_puuid,
+        type %in% stats,
+        position %in% positions,
+        win %in% wins,
+        team_id %in% team_ids
+      )}else{
+        data <- df_participant_events %>%
+          dplyr::filter(
+            player_id %in% player_puuid,
+            type %in% stats,
+            position %in% positions,
+            champion_name %in% champion_names,
+            win %in% wins,
+            team_id %in% team_ids)
+      }
     
     plot <- data %>% plot_ly(
       x = ~x,
@@ -60,9 +70,32 @@ f_map <- function(player,
         yanchor = "bottom",
         layer = "below"
       ),
-      xaxis = list(showgrid = FALSE,showticklabels = FALSE,title='',range(0,14000)), 
-      yaxis = list(showgrid = FALSE,showticklabels = FALSE,title = "",range(0,14000))
-    )
+      paper_bgcolor = 'rgba(0,0,0,0)',
+      plot_bgcolor = 'rgba(0,0,0,0)',
+      xaxis = list(
+        title = '',
+        showgrid = FALSE,
+        showticklabels = FALSE,
+        range(0, 14000),
+        tickfont = list(color = 'rgba(0,0,0,0)'),
+        linecolor = 'rgba(0,0,0,0)'
+      ),
+      yaxis = list(
+        title = '',
+        showgrid = FALSE,
+        showticklabels = FALSE,
+        range(0, 14000),
+        tickfont = list(color = 'rgba(0,0,0,0)'),
+        linecolor = 'rgba(0,0,0,0)'
+      ),
+      legend = list(
+        font = list(
+          color ="#c8aa6e"
+        )
+      )
+    ) %>%
+    config(displayModeBar = FALSE)
+
     return(plot)
   }
 
