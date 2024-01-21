@@ -55,23 +55,68 @@ f_items_sankey_graph  <-  function(player){
   nodes <- left_join(nodesTemp,mythic_items_id %>% select(item_name,recomanded),join_by('name'=='item_name')) %>%
     mutate(type = ifelse(is.na(type),recomanded,type))
   
+  #LEGEND
+  links_legend <- data.frame(
+    source=c('Class','Champion'), 
+    target=c('Champion','Item'), 
+    value=c(1,1)
+  )
+  
+  nodes_legend <-  data.frame(
+    name=c('Class','Champion','Item'), 
+    type=c('Example','Example','Example'),
+    recomanded=c(NA,NA,NA)
+  )
+  
+  links <- rbind(links_legend,links)
+  nodes <- rbind(nodes_legend,nodes)
+  
+  
   # With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
   links$IDsource <- match(links$source, nodes$name)-1 
   links$IDtarget <- match(links$target, nodes$name)-1
-  
+
   #kolejność kolorów ,posortować
-  tekst0 <- left_join(data.frame(type = unique(nodes$type)),class2Color,join_by('type'=='class'))$clolr
-  tekst1 <- paste(c("'",paste(tekst0,collapse = "', '"),"'"),collapse=  "")
-  tekst2 <- paste(c('d3.scaleOrdinal( [',tekst1,']);'),collapse = "")
+
+  tekstTEST <- 'd3.scaleOrdinal() .domain(["Fighter","Mage","Slayer","Tank","Marksman","Specialist", "Controller","Link","Example"]) .range(["#E18417","#7C17E1","#E41D1D","#00BF3B","#004AAD","#03F6FF","#EDCC23","#5b5a56","#5b5a56"])'
+  
+  links <- links %>% mutate(type = "Link")
   
   # Make the Network
   p <- sankeyNetwork(Links = links, Nodes = nodes,
                      Source = "IDsource", Target = "IDtarget",
                      Value = "value", NodeID = "name", 
-                     sinksRight=FALSE,NodeGroup = "type",
-                     colourScale = JS(tekst2))
-  return(p)
+                     sinksRight=FALSE, NodeGroup = "type",
+                     LinkGroup = 'type',units = "times",
+                     colourScale = JS(tekstTEST))
+  # JS <- 
+  #   '
+  #   function(el, x, data){
+  #     var svg = d3.select("svg")
+  #     // Handmade legend
+  #     svg.append("circle").attr("cx",25).attr("cy",10).attr("r", 4).style("fill", "#E18417")
+  #     svg.append("circle").attr("cx",90).attr("cy",10).attr("r", 4).style("fill", "#7C17E1")
+  #     svg.append("circle").attr("cx",150).attr("cy",10).attr("r", 4).style("fill", "#E41D1D")
+  #     svg.append("circle").attr("cx",215).attr("cy",10).attr("r", 4).style("fill", "#00BF3B")
+  #     svg.append("circle").attr("cx",270).attr("cy",10).attr("r", 4).style("fill", "#004AAD")
+  #     svg.append("circle").attr("cx",360).attr("cy",10).attr("r", 4).style("fill", "#03F6FF")
+  #     svg.append("circle").attr("cx",445).attr("cy",10).attr("r", 4).style("fill", "#EDCC23")
+  # 
+  #     svg.append("text").attr("x", 35).attr("y", 10).text("Fighter").style("font-size", "13px").attr("alignment-baseline","middle")
+  #     svg.append("text").attr("x", 100).attr("y", 10).text("Mage").style("font-size", "13px").attr("alignment-baseline","middle")
+  #  svg.append("text").attr("x", 160).attr("y", 10).text("Slayer").style("font-size", "13px").attr("alignment-baseline","middle")
+  #  svg.append("text").attr("x", 225).attr("y", 10).text("Tank").style("font-size", "13px").attr("alignment-baseline","middle")
+  #  svg.append("text").attr("x", 280).attr("y", 10).text("Marksman").style("font-size", "13px").attr("alignment-baseline","middle")
+  #  svg.append("text").attr("x", 370).attr("y", 10).text("Specialist").style("font-size", "13px").attr("alignment-baseline","middle")
+  #  svg.append("text").attr("x", 455).attr("y", 10).text("Controller").style("font-size", "13px").attr("alignment-baseline","middle")
+  #   } 
+  #   '
+  # 
+  # p <- htmlwidgets::onRender(p,JS)
+  
+    return(p)
 }
+
 
 
 # f_items_sankey_graph("Cwalina")

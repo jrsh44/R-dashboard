@@ -128,7 +128,6 @@ rect {
   align-items: center;
 }
 
-/* TAB 1  */
 .tab-wrapper {
   display: flex;
   width: 100%;
@@ -137,6 +136,7 @@ rect {
   justify-content: center;
   gap: 48px;
 }
+/* TAB 1  */
 
 .tab-title-text {
   display: flex;
@@ -147,7 +147,8 @@ rect {
 }
 
 .tab-map-container,
-.tab-champ-container {
+.tab-champ-container,
+.tab-adv-container {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -177,7 +178,7 @@ rect {
   width: 400px;
 }
 
-.tab1-time-container {
+.tab-vertical-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -187,7 +188,7 @@ rect {
   background-color: var(--bg-color-light);
 }
 
-.tab1-time-desc-wrapper {
+.tab-vertical-desc-wrapper {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -204,7 +205,7 @@ rect {
   align-items: center;
 }
 
-.tab1-time-wrapper {
+.tab-horizontal-chart-wrapper {
   display: flex;
   width: 100%;
 }
@@ -272,11 +273,61 @@ rect {
 
 /* TAB 3  */
 
+.tab3-sankey-text-wrapper {
+  width: 65%;
+}
+
+.tab3-sankey-button-wrapper {
+  display: flex;
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab3-sankey-legend-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.tab3-sankey-legend-item {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.circle-text {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: "Beaufort";
+  font-size: 12pt;
+  line-height: 16pt;
+  color: var(--grey_2);
+}
+
+.tab-adv-wrapper {
+  display: flex;
+  width: 25%;
+  flex-direction: column;
+  gap: 12px;
+}
 /* TAB 4  */
 
 .tab4-decorator-lg {
   display: flex;
   width: 550px;
+}
+
+rect.bg {
+  fill: var(--bg-color-light) !important;
 }
 
 /* NAVBAR */

@@ -77,12 +77,12 @@ ui <- navbarPage(
           plotlyOutput("t1_champions_chart"),
         ),
       ),
-      tags$div(class = "tab1-time-container",
+      tags$div(class = "tab-vertical-container",
         tags$div(class = "tab-title-text",
           tags$div(class = "typoH2", "Kiedy najczęściej gramy"),
           tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
           ),
-        tags$div(class = "tab1-time-desc-wrapper",
+        tags$div(class = "tab-vertical-desc-wrapper",
           tags$div(class = "tab1-time-text-wrapper", 
             tags$div(class = "typoBodyBold", "Każdy z nas ma wiele różnych obowiązków takich jak studia czy praca, ale łączy nas fakt, że zawsze znajdziemy czas, aby pograć w Ligę. Poniższa heatmapa prezentuje kiedy najczęściej zdarza nam się grać w przeciągu całego tygodnia.")
           ),
@@ -90,7 +90,7 @@ ui <- navbarPage(
             selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Cwalina","Borycki","Jarosz")),
           ),
         ),
-        tags$div(class = "tab1-time-wrapper",
+        tags$div(class = "tab-horizontal-chart-wrapper",
           plotlyOutput("t1_time_played_chart")
         ),
       )
@@ -100,9 +100,7 @@ ui <- navbarPage(
   #Zakładka 2
   tabPanel(
     "Mapy",
-    tags$head(),
-    tags$div(
-      class = "tab-wrapper",
+    tags$div(class = "tab-wrapper",
       tags$div(
         class = "tab-title-text",
         tags$div(class = "typoH1", "Przebieg gier"),
@@ -147,51 +145,81 @@ ui <- navbarPage(
   ),
   
   # Zakładka 3
-  tabPanel(
-    "Szczegółowe",
-    tags$div(class = "typoH1", "Statystyki szczegółowe"),
-    fluidRow(
-      column(
-        4,
-        selectInput(
-          inputId = "summoner",
-          label = "Summoner:",
-          choices = c("Cwalina", "Borycki", "Jarosz")
+  tabPanel("Szczegółowe",
+    tags$div(class = "tab-wrapper",
+      tags$div(class = "tab-title-text",
+        tags$div(class = "typoH1", "Szczegółowe statystyki"),
+        tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
+      ),
+      tags$div(class = "tab-adv-container", 
+        tags$div(class = "tab-adv-wrapper",
+          tags$div(class = "tab-title-text",
+            tags$div(class = "typoH2", "Statystyki Przywoływacza"),
+            tags$img(class = "tab-decorator", style="width: 350px;", src = "assets/decorator-hr.png"),
+            ),
+          tags$div(class = "typoBodyBold", "W League of Legends nie istnieje skala, która jednoznacznie potrafiłaby określić poziom umiejętności przywoływacza. Ze względu na możliwość wyboru jednej z pięciu ról (pozycji) oraz jednego z około 150 championów określenie wpływu na przebieg gry jest co najmniej bardzo trudnym zadaniem. Wraz z zespołem ustaliliśmy jednak 4 statystyki mogące stanowić o poziomie gracza."),
+          selectInput(inputId = "summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
+          uiOutput("t3_dynamic_input_0"),
+          uiOutput("t3_dynamic_input"),
+          uiOutput("t3_dynamic_input2"),
+          selectInput(inputId = "type", label = "Typ",choices = c("Density","Chronologically")),
         ),
-        selectInput(
-          inputId = "Position",
-          label = "Position",
-          choices = c("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"),
-          selected = "BOTTOM"
+        column(5,
+          plotlyOutput("t3_dmg_per_death"),
+          plotlyOutput("t3_minions_per_minute")
         ),
-        uiOutput("t3_dynamic_input"),
-        uiOutput("t3_dynamic_input2"),
-        selectInput(
-          inputId = "type",
-          label = "Type:",
-          choices = c("Density", "Chronologically")
+        column(5,
+          plotlyOutput("t3_kill_participation"),
+          plotlyOutput("t3_kda")
         )
       ),
-      column(
-        4,
-        plotlyOutput("t3_dmg_per_death"),
-        plotlyOutput("t3_minions_per_minute")
-      ),
-      column(
-        4,
-        plotlyOutput("t3_kill_participation"),
-        plotlyOutput("t3_kda")
+      tags$div(class = "tab-vertical-container",
+        tags$div(class = "tab-title-text",
+          tags$div(class = "typoH2", "Wybór championów i Itemów"),
+          tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
+          ),
+        tags$div(class = "tab-vertical-desc-wrapper",
+          tags$div(class = "tab3-sankey-text-wrapper", 
+            tags$div(class = "typoBodyBold", "Poprzez zabójstwa, wykonywanie zadań, niszczenie bódowli przeciwnika czy 'farmienie' minionów gracz otrzymuje złoto, które następnie może być wymienione w sklepie na przedmioty. Najcenniejsze, oznaczone tagiem 'Mythic' dają unikalne wzmocnienia. Z tego względu każdy przywoływacz może używać tylko 1 przedmiotu mitycznego w danym momencie. Ze względu na umiejętności postaci i ich użyteczność w różnych aspektach rozgrywki, pewne przedmioty są szczególnie sugerowane pewnym klasom championów, co obrazuje poniższy wykres.")
+          ),
+          tags$div(class = "tab3-sankey-button-wrapper", 
+            selectInput(inputId = "sankey_summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
+          ),
+        ),
+        tags$div(class = "tab3-sankey-legend-wrapper",
+          tags$div(class="tab3-sankey-legend-item",
+            tags$div(class="circle", style="background-color: #E18417;"),
+            tags$div(class="circle-text", "Fighter")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #7C17E1;"),
+            tags$div(class="circle-text", "Mage")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #E41D1D;"),
+            tags$div(class="circle-text", "Slayer")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #00BF3B;"),
+            tags$div(class="circle-text", "Tank")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #004AAD;"),
+            tags$div(class="circle-text", "Marksman")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #03F6FF;"),
+            tags$div(class="circle-text", "Specialist")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #EDCC23;"),
+            tags$div(class="circle-text", "Controller")
+          ),
+        ),
+        tags$div(class = "tab-horizontal-chart-wrapper",
+          sankeyNetworkOutput("t3_sankey")
+        ),
       )
-    ),
-    fluidRow(
-      titlePanel("Itemki"),
-      selectInput(
-        inputId = "sankey_summoner",
-        label = "Summoner:",
-        choices = c("Cwalina", "Borycki", "Jarosz")
-      ),
-      sankeyNetworkOutput("t3_sankey"),
-      plotOutput("t3_sankey_legend")
     )
   ),
   
@@ -291,164 +319,152 @@ server <- function(input, output) {
   
   
   # Zakładka 3
-  
-  output$t3_dynamic_input <- renderUI({
-    myStatsPosition <- df_item_champ %>%
-      dplyr::filter(
+    observeEvent(input$summoner, {
+      output$t3_dynamic_input_0 <- renderUI({
+        positions <- c("TOP","JUNGLE","MIDDLE","BOTTOM","UTILITY")
+        myStatsPosition <-  unique((df_item_champ %>% dplyr::filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner))))$position)
+        selectInput(inputId = "Position",label = "Pozycja",
+                    choices = positions[positions %in% myStatsPosition])
+        
+      })
+    })
+    
+    observeEvent(input$Position, {  
+    output$t3_dynamic_input <- renderUI({
+        myStatsPosition <- df_item_champ %>%
+          dplyr::filter(
         player_id == as.vector(
           summoner %>% filter(name %in% input$summoner) %>% select(puuid)
         ),
         position == input$Position
       )
-    if (nrow(myStatsPosition) == 0) {
-      selectInput(inputId = "id1",
-                  label = "Champion",
-                  choices = c("None"))
-    } else {
-      selectInput(
+        if (nrow(myStatsPosition) == 0) {
+          selectInput(inputId = "id1",
+                      label = "Champion",
+                      choices = c("None"))
+        } else {
+          selectInput(
         inputId = "id1",
         label = "Champion",
         choices = c("All", unique(
           unlist(myStatsPosition$champion_name)
         ))
       )
-    }
-  })
-  
-  output$t3_dynamic_input2 <- renderUI({
-    if (input$type == "Density") {
-      myStatsPosition <- df_item_champ %>%
-        filter(
-          player_id == as.vector(
-            summoner %>% filter(name %in% input$summoner) %>% select(puuid)
-          ),
-          position == input$Position
-        )
-      if (nrow(myStatsPosition) == 0) {
-        selectInput(
-          inputId = "compare",
-          label = "Compare with:",
-          choices = c("None")
-        )
-      } else {
-        champs <- unique(unlist(myStatsPosition$champion_name))
-        if (input$id1 == "All" | input$id1 == "None") {
-          selectInput(
-            inputId = "compare",
-            label = "Compare with:",
-            choices = c("Don't")
-          )
-        } else {
-          selectInput(
-            inputId = "compare",
-            label = "Compare with:",
-            choices = c("Don't", "All", champs[champs != input$id1])
-          )
         }
+        
+      })
+    })
+  
+    
+    observeEvent(input$id1, {
+      output$t3_dynamic_input2 <- renderUI({
+        if (input$type=="Density") {
+          myStatsPosition <- df_item_champ %>% 
+            filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
+          if (nrow(myStatsPosition)==0) {
+            selectInput(inputId = "compare",
+                        label = "Porównaj z:",
+                        choices = c("None"))
+          } else {
+            champs <- unique(unlist(myStatsPosition$champion_name))
+            if (input$id1=="All" | input$id1=="None") {
+              selectInput(inputId = "compare", label = "Porównaj z:", choices = c("Don't"))
+            } else {
+              selectInput(inputId = "compare", label = "Porównaj z:", choices = c("Don't","All",champs[champs != input$id1]))
+            }
+          }
+        }
+      })
+    })
+
+      output$t3_dmg_per_death <- renderPlotly({
+        if (!is.null(input$id1)){
+          if (input$type=='Density') {
+            f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"DmgPerDeath",input$compare)
+          } else {
+            f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"DmgPerDeath")
+          }
+        }
+      })
+
+    
+  output$t3_dmg_per_death <- renderPlotly({
+    if (!is.null(input$id1)){
+      if (input$type=='Density') {
+        f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"DmgPerDeath",input$compare)
+      } else {
+        f_overall_stats_plot(input$summoner,
+                            input$Position,
+                            input$id1,
+                            input$type,
+                            "DmgPerDeath")
+      
       }
     }
   })
   
-  output$t3_dmg_per_death <- renderPlotly({
-    if (input$type == 'Density') {
-      f_overall_stats_plot(
-        input$summoner,
-        input$Position,
-        input$id1,
-        input$type,
-        "DmgPerDeath",
-        input$compare
-      )
-    } else {
-      f_overall_stats_plot(input$summoner,
-                           input$Position,
-                           input$id1,
-                           input$type,
-                           "DmgPerDeath")
-    }
-  })
-  
   output$t3_kill_participation <- renderPlotly({
-    if (input$type == 'Density') {
-      f_overall_stats_plot(
-        input$summoner,
-        input$Position,
-        input$id1,
-        input$type,
-        "kill_participation",
-        input$compare
-      )
-    } else {
-      f_overall_stats_plot(input$summoner,
-                           input$Position,
-                           input$id1,
-                           input$type,
-                           "kill_participation")
+    if (!is.null(input$id1)){
+      if (input$type=='Density') {
+        f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kill_participation",input$compare)
+      } else {
+        f_overall_stats_plot(input$summoner,
+                            input$Position,
+                            input$id1,
+                            input$type,
+                            "kill_participation")
+      }
     }
   })
   
   output$t3_minions_per_minute <- renderPlotly({
-    if (input$type == 'Density') {
-      f_overall_stats_plot(
-        input$summoner,
-        input$Position,
-        input$id1,
-        input$type,
-        "MinionsPerMinute",
-        input$compare
-      )
-    } else {
-      f_overall_stats_plot(input$summoner,
-                           input$Position,
-                           input$id1,
-                           input$type,
-                           "MinionsPerMinute")
+    if (!is.null(input$id1)){
+      if (input$type=='Density') {
+        f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"MinionsPerMinute",input$compare)
+      } else {
+        f_overall_stats_plot(input$summoner,
+                            input$Position,
+                            input$id1,
+                            input$type,
+                            "MinionsPerMinute")
+      }
     }
   })
   
   output$t3_kda <- renderPlotly({
-    if (input$type == 'Density') {
-      f_overall_stats_plot(input$summoner,
-                           input$Position,
-                           input$id1,
-                           input$type,
-                           "kda",
-                           input$compare)
-    } else {
-      f_overall_stats_plot(input$summoner,
-                           input$Position,
-                           input$id1,
-                           input$type,
-                           "kda")
+    if (!is.null(input$id1)){
+      if (input$type=='Density') {
+        f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kda",input$compare)
+      } else {
+        f_overall_stats_plot(input$summoner,
+                            input$Position,
+                            input$id1,
+                            input$type,
+                            "kda")
+      }
     }
   })
   
   output$t3_sankey <- renderSankeyNetwork({
-    f_items_sankey_graph(input$sankey_summoner)
+
+    htmlwidgets::onRender(f_items_sankey_graph(input$sankey_summoner),
+                                             'function(el, x) {
+    d3.selectAll(".node text")
+        .style("fill", "#c8aa6e").style("font-size","14px");
+  }'
+    )
+    
   })
   
-  output$t3_sankey_legend <- renderPlot({
-    plot(
-      NULL ,
-      xaxt = 'n',
-      yaxt = 'n',
-      bty = 'n',
-      ylab = '',
-      xlab = '',
-      xlim = 0:1,
-      ylim = 0:1
+  output$t3_sankey_legend <- renderSankeyNetwork({
+    htmlwidgets::onRender(f_sankey_lenend_graph(),
+                          'function(el, x) {
+    d3.selectAll(".node text")
+        .style("fill", "#c8aa6e").style("font-size","14px");
+  }'
     )
-    legend(
-      "topleft",
-      legend = class2Color$class,
-      pch = 15,
-      pt.cex = 3,
-      cex = 1.5,
-      bty = 'n',
-      col = class2Color$clolr
-    )
-    mtext("Classes", at = 0.2, cex = 2)
   })
+  
 }
 
 

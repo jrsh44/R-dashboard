@@ -8,15 +8,24 @@
 # puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
 df_item_champ <- df_player_match_stats %>%
- inner_join(df_player_match_stats %>% 
-    group_by(player_id, position, champion_name) %>%
-    count() %>%
-    dplyr::filter(n > 1) %>% 
-    select(player_id, champion_name),
-  by = c('player_id','position','champion_name'))
+  inner_join(df_player_match_stats %>% 
+               group_by(player_id, position, champion_name) %>%
+               count() %>%
+               dplyr::filter(n > 1) %>% 
+               select(player_id, champion_name),
+             by = c('player_id','position','champion_name'))
+
+summoner <- data.frame(name = c("Cwalina","Borycki","Jarosz"),
+                       puuid = c( "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA",
+                                  "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA",
+                                  "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"))
 
 f_stats_position_reactive <- function(player_name, summoner_position, id1, type, compare = "brak"){
-
+  
+  if(is.null(id1)){
+    id1 = "All"
+  }
+  
   if (player_name == "Cwalina") {
     player_puuid <- puuid_cwalina
   } else if (player_name == "Borycki") {
@@ -26,10 +35,10 @@ f_stats_position_reactive <- function(player_name, summoner_position, id1, type,
   } else {
     stop("Error: Invalid player_puuid.")
   }
-
+  
   df_stats_position <- df_item_champ %>% 
     dplyr::filter(player_id == player_puuid)
-
+  
   if (type == "Density") {
     if (id1 == "All") {
       df_stats_position <- df_stats_position %>%
@@ -53,160 +62,134 @@ f_stats_position_reactive <- function(player_name, summoner_position, id1, type,
   } else {
     df_stats_position <- df_stats_position %>% 
       dplyr::filter(position == summoner_position)
-    if (id1 != "All") {
+    if (id1 == "None") {
+      df_stats_position <- data.frame()
+    } else {
+      if (id1 != "All") {
+        df_stats_position <- df_stats_position %>% 
+          dplyr::filter(champion_name == id1)
+      }
       df_stats_position <- df_stats_position %>% 
-        dplyr::filter(champion_name == id1)
+        arrange(match_start_time) %>% 
+        mutate(n = 1:nrow(df_stats_position))
     }
-    df_stats_position <- df_stats_position %>% 
-      arrange(match_start_time) %>% 
-      mutate(n = 1:nrow(df_stats_position))
   }
   return(df_stats_position)
 }
-  
+
 f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat, compare = "brak"){
+  
+  if (stat == "DmgPerDeath") {
+    chart_title = "Zadane obrażenia do ilości śmierci"
+  } else if (stat=="kill_participation"){
+    chart_title = "Procentowy udział w zabójstwach"
+  } else if (stat=="MinionsPerMinute") {
+    chart_title = "Miniony na minute"
+  } else {
+    chart_title = "Współczynnik KDA"
+  }
+  
   df_stats_position <- f_stats_position_reactive(player_name, summoner_position, id1, type, compare)
   if (nrow(df_stats_position) != 0) {
     if (type=="Density") {
       if (stat=="DmgPerDeath") {
         gg <- ggplot(data = df_stats_position %>% mutate(deaths = ifelse(deaths==0,1,deaths)),aes(x = total_damage_dealt_to_champions/deaths)) +
-          geom_density(aes(fill = compare),alpha = 0.5) + 
-          labs() 
+          geom_density(aes(fill = compare),alpha = 0.5)
         
       } else if (stat=="kill_participation") {
         gg <- ggplot(data = df_stats_position,aes(x = kill_participation)) +
-          geom_density(aes(fill = compare),alpha = 0.5) + 
-          labs() 
+          geom_density(aes(fill = compare),alpha = 0.5)
         
       } else  if (stat=="MinionsPerMinute") {
         gg <- ggplot(data = df_stats_position,aes(x = total_minions_killed/(game_length/60))) +
-          geom_density(aes(fill = compare),alpha = 0.5) + 
-          labs() 
+          geom_density(aes(fill = compare),alpha = 0.5)
         
       } else {
         gg <- ggplot(data = df_stats_position %>% mutate(deaths = ifelse(deaths==0,1,deaths)),aes(x = (kills+assists)/deaths)) +
-          geom_density(aes(fill = compare),alpha = 0.5) + 
-          labs() 
+          geom_density(aes(fill = compare),alpha = 0.5)
       }
-      gg <- ggplotly(gg)
+      gg <- ggplotly(gg + theme(legend.text = element_text(color = "#c8aa6e"),
+                                legend.background = element_rect(fill = "#020a13"),
+                                plot.margin = margin(t = 30,  
+                                                r = 0,  
+                                                b = 0,  
+                                                l = 0)) +
+                       scale_fill_manual(values = c("#0ac8b9","#005a82")) +
+                       scale_x_continuous(expand = c(0, 0), limits = c(0, NA),) + 
+                       scale_y_continuous(expand = c(0, 0), limits = c(0, NA)),
+                     hovertemplate = "<i>xd</i>") %>%
+        layout(legend=list(title=list(text='Comparison:',font = list(color = "#c8aa6e"))))
+      ##882a2e
+      #values = c("#0ac8b9","#005a82"))) 
     } else if (type=="Chronologically") {
       if(stat=="DmgPerDeath"){
-        gg <- plot_ly(data = df_stats_position,
+        gg <- plot_ly(data = df_stats_position %>% mutate(deaths = ifelse(deaths==0,1,deaths)),
                       x = ~n,
                       y = ~total_damage_dealt_to_champions/deaths,
                       type = 'scatter',
-                      mode = 'lines+markers')
+                      mode = 'lines+markers',
+                      text = ~champion_name,
+                      hovertemplate = paste('<i>Value</i>: %{y:.2f}',
+                                            '<br><b>Match</b>: %{x:.0f}',
+                                            '<br><b>Champ</b>: <b>%{text}</b>','<extra></extra>'),
+            showlegend = FALSE
+          ) 
       } else if (stat=="kill_participation") {
         gg <- plot_ly(data = df_stats_position,
                       x = ~n,
                       y = ~kill_participation,
                       type = 'scatter',
-                      mode = 'lines+markers')
-      } else if (stat=="MinionsPerMinute"){
+                      mode = 'lines+markers',
+                      text = ~champion_name,
+                      hovertemplate = paste('<i>Value</i>: %{y:.2f}',
+                                            '<br><b>Match</b>: %{x:.0f}',
+                                            '<br><b>Champ</b>: <b>%{text}</b>','<extra></extra>'),
+                      showlegend = FALSE
+        ) 
+      } else if (stat=="kill_participation") {
         gg <- plot_ly(data = df_stats_position,
                       x = ~n,
                       y = ~total_minions_killed/(game_length/60),
                       type = 'scatter',
-                      mode = 'lines+markers')
+                      mode = 'lines+markers',
+                      text = ~champion_name,
+                      hovertemplate = paste('<i>Value</i>: %{y:.2f}',
+                                            '<br><b>Match</b>: %{x:.0f}',
+                                            '<br><b>Champ</b>: <b>%{text}</b>','<extra></extra>'),
+                      showlegend = FALSE
+        ) 
       } else {
         gg <- plot_ly(data = df_stats_position %>% mutate(deaths = ifelse(deaths==0,1,deaths)),
                       x = ~n,
                       y = ~(kills + assists)/deaths,
                       type = 'scatter',
-                      mode = 'lines+markers')
+                      mode = 'lines+markers',
+                      text = ~champion_name,
+                      hovertemplate = paste('<i>Value</i>: %{y:.2f}',
+                                            '<br><b>Match</b>: %{x:.0f}',
+                                            '<br><b>Champ</b>: <b>%{text}</b>','<extra></extra>'),
+                      showlegend = FALSE
+        ) 
       }
     }
   } else {
     gg <- ggplot(data = data.frame(brak = "brak")) + geom_text(aes(x = 1,y = 1,label = brak))
     gg <- ggplotly(gg)
   }
+  
+  gg <- gg  %>%
+    layout(
+      title = list(text =  chart_title),
+      font = list(
+        size = 12,
+        color = "#c8aa6e"
+      ),
+      xaxis = list(title = "",tickfont = list(color = "#5b5a56"),color = "#c8aa6e", showgrid = TRUE, gridcolor = "#c8aa6e35", zeroline = TRUE, showline = TRUE,rangemode="tozero"),
+      yaxis = list(title = "",tickfont = list(color = "#5b5a56"),color = "#c8aa6e", showgrid = TRUE, gridcolor = "#c8aa6e35", zeroline = TRUE, showline = TRUE,rangemode="tozero"),
+      paper_bgcolor = "rgba(0,0,0,0)",
+      plot_bgcolor = "rgba(0,0,0,0)"
+      ) %>%
+    config(displayModeBar = FALSE, staticPlot = TRUE)
+
   return(gg)
 }
-
-
-# server <- function(input, output) {
-#   # POPRAWIĆ FILTROWANIE PO GRACZU W dynamicinput,dynamicinput2, myStatsReactive
-#   output$dynamicInput <- renderUI({
-#     myStatsPosition <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
-#     if (nrow(myStatsPosition)==0) {
-#       selectInput(inputId = "id1",
-#                   label = "Champion",
-#                   choices = c("None"))
-#     } else {
-#       selectInput(inputId = "id1",label = "Champion", choices = c("All",unique(unlist(myStatsPosition$champion_name))))
-#     }
-#   })
-  
-#   output$dynamicInput2 <- renderUI({
-#     if (input$type=="Density") {
-#       myStatsPosition <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
-#       if (nrow(myStatsPosition)==0) {
-#         selectInput(inputId = "compare",
-#                     label = "Compare with:",
-#                     choices = c("None"))
-#       } else {
-#         champs <- unique(unlist(myStatsPosition$champion_name))
-#         if (input$id1=="All" | input$id1=="None") {
-#           selectInput(inputId = "compare", label = "Compare with:", choices = c("Don't"))
-#         } else {
-#           selectInput(inputId = "compare", label = "Compare with:", choices = c("Don't","All",champs[champs != input$id1]))
-#         }
-#       }
-#     }
-#   })
-  
-
-#   output$DmgPerDeath <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"DmgPerDeath",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"DmgPerDeath")
-#     }
-#   })
-  
-#   output$kill_participation <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kill_participation",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kill_participation")
-#     }
-#   })
-  
-#   output$MinionsPerMinute <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"MinionsPerMinute",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"MinionsPerMinute")
-#     }
-#   })
-  
-#   output$Kda <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kda",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kda")
-#     }
-#   })
-# }
-
-# ui <- fluidPage(titlePanel("Title"),
-                
-#                 fluidRow(
-#                   column(4,
-#                          selectInput(inputId = "summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-#                          selectInput(inputId = "Position",label = "Position",
-#                                      choices = c("TOP","JUNGLE","MIDDLE","BOTTOM","UTILITY"),selected = "BOTTOM"),
-#                          uiOutput("dynamicInput"),
-#                          uiOutput("dynamicInput2"),
-#                          selectInput(inputId = "type", label = "Type:",choices = c("Density","Chronologically"))),
-#                   column(4,
-#                          plotlyOutput("DmgPerDeath"),
-#                          plotlyOutput("MinionsPerMinute")
-#                   ),
-#                   column(4,
-#                          plotlyOutput("kill_participation"),
-#                          plotlyOutput("Kda")))
-                
-# )
-
-# runApp(shinyApp(ui,server))
