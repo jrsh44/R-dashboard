@@ -72,28 +72,29 @@ ui <- navbarPage(
               )
             ),
           ),
-          tags$div(class = "tab1-champ-wrapper",
-            plotlyOutput("t1_champions_chart"),
+        ),
+        tags$div(class = "tab-champ-wrapper",
+          plotlyOutput("t1_champions_chart"),
+        ),
+      ),
+      tags$div(class = "tab1-time-container",
+        tags$div(class = "tab-title-text",
+          tags$div(class = "typoH2", "Kiedy najczęściej gramy"),
+          tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
+          ),
+        tags$div(class = "tab1-time-desc-wrapper",
+          tags$div(class = "tab1-time-text-wrapper", 
+            tags$div(class = "typoBodyBold", "Każdy z nas ma wiele różnych obowiązków takich jak studia czy praca, ale łączy nas fakt, że zawsze znajdziemy czas, aby pograć w Ligę. Poniższa heatmapa prezentuje kiedy najczęściej zdarza nam się grać w przeciągu całego tygodnia.")
+          ),
+          tags$div(class = "tab1-time-button-wrapper", 
+            selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Cwalina","Borycki","Jarosz")),
           ),
         ),
-        tags$div(class = "tab1-time-container",
-          tags$div(class = "tab1-title-text",
-            tags$div(class = "typoH2", "Kiedy najczęściej gramy"),
-            tags$img(class = "tab1-decorator", src = "assets/decorator-hr.png"),
-            ),
-          tags$div(class = "tab1-time-desc-wrapper",
-            tags$div(class = "tab1-time-text-wrapper", 
-              tags$div(class = "typoBodyBold", "Każdy z nas ma wiele różnych obowiązków takich jak studia czy praca, ale łączy nas fakt, że zawsze znajdziemy czas, aby pograć w Ligę. Poniższa heatmapa prezentuje kiedy najczęściej zdarza nam się grać w przeciągu całego tygodnia.")
-            ),
-            tags$div(class = "tab1-time-button-wrapper", 
-              selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Cwalina","Borycki","Jarosz")),
-            ),
-          ),
-          tags$div(class = "tab1-time-wrapper",
-            plotlyOutput("t1_time_played_chart")
-          ),
-        )
-     )
+        tags$div(class = "tab1-time-wrapper",
+          plotlyOutput("t1_time_played_chart")
+        ),
+      )
+    )
   ),
 
   #Zakładka 2
@@ -141,9 +142,9 @@ ui <- navbarPage(
           ),
         tags$div(class = "tab-map-wrapper",
                  plotlyOutput("t2_map"), ),
-        ),
-      )
-    ),
+      ),
+    )
+  ),
   
   # Zakładka 3
   tabPanel(
