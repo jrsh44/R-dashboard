@@ -75,7 +75,8 @@ f_plot_time <- function(player){
             color = "#c8aa6e"
         ),
         showlegend = FALSE
-    )
+    ) %>%
+    config(displayModeBar = FALSE, staticPlot = TRUE)
 
     return(plot)
 }
