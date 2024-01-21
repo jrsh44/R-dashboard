@@ -319,6 +319,14 @@ rect {
   flex-direction: column;
   gap: 12px;
 }
+
+.tab3-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  width: 70%;
+  margin: 0;
+}
 /* TAB 4  */
 
 .tab4-decorator-lg {

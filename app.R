@@ -164,11 +164,9 @@ ui <- navbarPage(
           uiOutput("t3_dynamic_input2"),
           selectInput(inputId = "type", label = "Typ",choices = c("Density","Chronologically")),
         ),
-        column(5,
+        tags$div(class = "tab3-grid-container",
           plotlyOutput("t3_dmg_per_death"),
-          plotlyOutput("t3_minions_per_minute")
-        ),
-        column(5,
+          plotlyOutput("t3_minions_per_minute"),
           plotlyOutput("t3_kill_participation"),
           plotlyOutput("t3_kda")
         )
