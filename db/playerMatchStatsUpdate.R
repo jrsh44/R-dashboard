@@ -16,7 +16,7 @@ existing_data <- read.csv("./db/playerMatchStats.csv")
 source("./db/items.R")
 
 for (i in 1:length(match_list)) {
-  player_idx <- which(match_list[[i]]$metadata$participants == puuid)
+    player_idx <- which(match_list[[i]]$metadata$participants == puuid)
   match_id <- match_list[[i]]$metadata$matchId
   match_start_time <-  match_list[[i]]$info$gameCreation
   kills <- match_list[[i]]$info$participants$kills[[player_idx]]
@@ -46,34 +46,36 @@ for (i in 1:length(match_list)) {
    total_minions_killed <- match_list[[i]]$info$participants$totalMinionsKilled[[player_idx]]
    game_length <-  match_list[[i]]$info$participants$challenges$gameLength[[player_idx]]
 
-  new_record <- data.frame(
-    player_id = puuid,
-    match_id = match_id,
-    match_start_time = match_start_time,
-    kills = kills,
-    deaths = deaths,
-    assists = assists,
-    win = win,
-    total_damage_dealt_to_champions = total_damage_dealt_to_champions,
-    total_damage_taken = total_damage_taken,
-    gold_earned = gold_earned,
-    champ_level = champ_level,
-    champion_name = champion_name,
-    vision_score = vision_score,
-    nexus_kills = nexus_kills,
-    turret_kills = turret_kills,
-    inhibitor_kills = inhibitor_kills,
-    mythic_item = mythic_item,
-    position = position,
-    kill_participation = kill_participation,
-    total_minions_killed = total_minions_killed,
-    game_length = game_length
-    )
-
-  if (!any(duplicated(rbind(existing_data, new_record)))) {
-    existing_data <- rbind(existing_data, new_record)
-  }
-
+   if(!is.null(kill_participation)){
+     
+     new_record <- data.frame(
+       player_id = puuid,
+       match_id = match_id,
+       match_start_time = match_start_time,
+       kills = kills,
+       deaths = deaths,
+       assists = assists,
+       win = win,
+       total_damage_dealt_to_champions = total_damage_dealt_to_champions,
+       total_damage_taken = total_damage_taken,
+       gold_earned = gold_earned,
+       champ_level = champ_level,
+       champion_name = champion_name,
+       vision_score = vision_score,
+       nexus_kills = nexus_kills,
+       turret_kills = turret_kills,
+       inhibitor_kills = inhibitor_kills,
+       mythic_item = mythic_item,
+       position = position,
+       kill_participation = kill_participation,
+       total_minions_killed = total_minions_killed,
+       game_length = game_length
+     )
+     
+     if (!any(duplicated(rbind(existing_data, new_record)))) {
+       existing_data <- rbind(existing_data, new_record)
+     }
+   }
 }
 
 write.csv(existing_data, "./db/playerMatchStats.csv", row.names = FALSE)

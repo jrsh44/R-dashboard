@@ -18,7 +18,7 @@ f_plot_champions <- function(player, stat, champ_amount = 5){
         color <- "#f6bb45"
     } else if (player == "Jarosz"){
         player_puuid <- puuid_jarosz
-        color <- "#86B6F6"
+        color <- "#005a82"
     } else {
         stop("Error: Invalid player_puuid.")
     }
