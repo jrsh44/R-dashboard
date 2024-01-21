@@ -77,12 +77,12 @@ ui <- navbarPage(
           plotlyOutput("t1_champions_chart"),
         ),
       ),
-      tags$div(class = "tab1-time-container",
+      tags$div(class = "tab-vertical-container",
         tags$div(class = "tab-title-text",
           tags$div(class = "typoH2", "Kiedy najczęściej gramy"),
           tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
           ),
-        tags$div(class = "tab1-time-desc-wrapper",
+        tags$div(class = "tab-vertical-desc-wrapper",
           tags$div(class = "tab1-time-text-wrapper", 
             tags$div(class = "typoBodyBold", "Każdy z nas ma wiele różnych obowiązków takich jak studia czy praca, ale łączy nas fakt, że zawsze znajdziemy czas, aby pograć w Ligę. Poniższa heatmapa prezentuje kiedy najczęściej zdarza nam się grać w przeciągu całego tygodnia.")
           ),
@@ -90,7 +90,7 @@ ui <- navbarPage(
             selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Cwalina","Borycki","Jarosz")),
           ),
         ),
-        tags$div(class = "tab1-time-wrapper",
+        tags$div(class = "tab-horizontal-chart-wrapper",
           plotlyOutput("t1_time_played_chart")
         ),
       )
@@ -100,9 +100,7 @@ ui <- navbarPage(
   #Zakładka 2
   tabPanel(
     "Mapy",
-    tags$head(),
-    tags$div(
-      class = "tab-wrapper",
+    tags$div(class = "tab-wrapper",
       tags$div(
         class = "tab-title-text",
         tags$div(class = "typoH1", "Przebieg gier"),
@@ -148,35 +146,80 @@ ui <- navbarPage(
   
   # Zakładka 3
   tabPanel("Szczegółowe",
-           tags$div(class = "tab-wrapper",
-                    tags$div(class = "tab1-title-text",
-                             tags$div(class = "typoH1", "Szczegółowe statystyki"),
-                             tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
-                    )),
-    fluidRow(
-      tags$div(class = "typoH2", "Statystyki Przywoływacza"),
-      column(4,
-        selectInput(inputId = "summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
-        uiOutput("t3_dynamic_input_0"),
-        uiOutput("t3_dynamic_input"),
-        uiOutput("t3_dynamic_input2"),
-        selectInput(inputId = "type", label = "Type",choices = c("Density","Chronologically")),
-        tags$div(class = "typoBodyBold", "W League of Legends nie istnieje skala, która jednoznacznie potrafiłaby określić poziom umiejętności przywoływacza. Ze względu na możliwość wyboru jednej z pięciu ról (pozycji) oraz jednego z około 150 championów określenie wpływu na przebieg gry jest co najmniej bardzo trudnym zadaniem. Wraz z zespołem ustaliliśmy jednak 4 statystyki mogące stanowić o poziomie gracza.")),
-      column(4,
-        plotlyOutput("t3_dmg_per_death"),
-        plotlyOutput("t3_minions_per_minute")
+    tags$div(class = "tab-wrapper",
+      tags$div(class = "tab-title-text",
+        tags$div(class = "typoH1", "Szczegółowe statystyki"),
+        tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
-      column(
-        4,
-        plotlyOutput("t3_kill_participation"),
-        plotlyOutput("t3_kda")
+      tags$div(class = "tab-adv-container", 
+        tags$div(class = "tab-adv-wrapper",
+          tags$div(class = "tab-title-text",
+            tags$div(class = "typoH2", "Statystyki Przywoływacza"),
+            tags$img(class = "tab-decorator", style="width: 350px;", src = "assets/decorator-hr.png"),
+            ),
+          tags$div(class = "typoBodyBold", "W League of Legends nie istnieje skala, która jednoznacznie potrafiłaby określić poziom umiejętności przywoływacza. Ze względu na możliwość wyboru jednej z pięciu ról (pozycji) oraz jednego z około 150 championów określenie wpływu na przebieg gry jest co najmniej bardzo trudnym zadaniem. Wraz z zespołem ustaliliśmy jednak 4 statystyki mogące stanowić o poziomie gracza."),
+          selectInput(inputId = "summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
+          uiOutput("t3_dynamic_input_0"),
+          uiOutput("t3_dynamic_input"),
+          uiOutput("t3_dynamic_input2"),
+          selectInput(inputId = "type", label = "Typ",choices = c("Density","Chronologically")),
+        ),
+        column(5,
+          plotlyOutput("t3_dmg_per_death"),
+          plotlyOutput("t3_minions_per_minute")
+        ),
+        column(5,
+          plotlyOutput("t3_kill_participation"),
+          plotlyOutput("t3_kda")
+        )
+      ),
+      tags$div(class = "tab-vertical-container",
+        tags$div(class = "tab-title-text",
+          tags$div(class = "typoH2", "Wybór championów i Itemów"),
+          tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
+          ),
+        tags$div(class = "tab-vertical-desc-wrapper",
+          tags$div(class = "tab3-sankey-text-wrapper", 
+            tags$div(class = "typoBodyBold", "Poprzez zabójstwa, wykonywanie zadań, niszczenie bódowli przeciwnika czy 'farmienie' minionów gracz otrzymuje złoto, które następnie może być wymienione w sklepie na przedmioty. Najcenniejsze, oznaczone tagiem 'Mythic' dają unikalne wzmocnienia. Z tego względu każdy przywoływacz może używać tylko 1 przedmiotu mitycznego w danym momencie. Ze względu na umiejętności postaci i ich użyteczność w różnych aspektach rozgrywki, pewne przedmioty są szczególnie sugerowane pewnym klasom championów, co obrazuje poniższy wykres.")
+          ),
+          tags$div(class = "tab3-sankey-button-wrapper", 
+            selectInput(inputId = "sankey_summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
+          ),
+        ),
+        tags$div(class = "tab3-sankey-legend-wrapper",
+          tags$div(class="tab3-sankey-legend-item",
+            tags$div(class="circle", style="background-color: #E18417;"),
+            tags$div(class="circle-text", "Fighter")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #7C17E1;"),
+            tags$div(class="circle-text", "Mage")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #E41D1D;"),
+            tags$div(class="circle-text", "Slayer")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #00BF3B;"),
+            tags$div(class="circle-text", "Tank")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #004AAD;"),
+            tags$div(class="circle-text", "Marksman")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #03F6FF;"),
+            tags$div(class="circle-text", "Specialist")
+          ),
+          tags$div(class="tab3-sankey-legend-item" ,
+            tags$div(class="circle", style="background-color: #EDCC23;"),
+            tags$div(class="circle-text", "Controller")
+          ),
+        ),
+        tags$div(class = "tab-horizontal-chart-wrapper",
+          sankeyNetworkOutput("t3_sankey")
+        ),
       )
-    ),
-    fluidRow(
-      tags$div(class = "typoH2", "Wybór championów i Itemów"),
-      selectInput(inputId = "sankey_summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
-      tags$div(class = "typoBodyBold", "Poprzez zabójstwa, wykonywanie zadań, niszczenie bódowli przeciwnika czy 'farmienie' minionów gracz otrzymuje złoto, które następnie może być wymienione w sklepie na przedmioty. Najcenniejsze, oznaczone tagiem 'Mythic' dają unikalne wzmocnienia. Z tego względu każdy przywoływacz może używać tylko 1 przedmiotu mitycznego w danym momencie. Ze względu na umiejętności postaci i ich użyteczność w różnych aspektach rozgrywki, pewne przedmioty są szczególnie sugerowane pewnym klasom championów, co obrazuje poniższy wykres."),
-      sankeyNetworkOutput("t3_sankey")
     )
   ),
   
@@ -280,7 +323,7 @@ server <- function(input, output) {
       output$t3_dynamic_input_0 <- renderUI({
         positions <- c("TOP","JUNGLE","MIDDLE","BOTTOM","UTILITY")
         myStatsPosition <-  unique((df_item_champ %>% dplyr::filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner))))$position)
-        selectInput(inputId = "Position",label = "Position",
+        selectInput(inputId = "Position",label = "Pozycja",
                     choices = positions[positions %in% myStatsPosition])
         
       })
@@ -320,14 +363,14 @@ server <- function(input, output) {
             filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
           if (nrow(myStatsPosition)==0) {
             selectInput(inputId = "compare",
-                        label = "Compare with",
+                        label = "Porównaj z:",
                         choices = c("None"))
           } else {
             champs <- unique(unlist(myStatsPosition$champion_name))
             if (input$id1=="All" | input$id1=="None") {
-              selectInput(inputId = "compare", label = "Compare with:", choices = c("Don't"))
+              selectInput(inputId = "compare", label = "Porównaj z:", choices = c("Don't"))
             } else {
-              selectInput(inputId = "compare", label = "Compare with:", choices = c("Don't","All",champs[champs != input$id1]))
+              selectInput(inputId = "compare", label = "Porównaj z:", choices = c("Don't","All",champs[champs != input$id1]))
             }
           }
         }

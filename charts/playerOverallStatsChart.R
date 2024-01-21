@@ -7,14 +7,6 @@
 # puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
 # puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
-#TO DO
-#FONT COLOR NA SZARY A GRIND NA ZLOTO
-#ZMNIEJSZYĆ / PRZESUNĄĆ WYKRESY
-#CZCIONKI
-#wyifować errory w dynamic ui
-# position statyczne czy dynamiczne?
-# marginesy
-
 df_item_champ <- df_player_match_stats %>%
   inner_join(df_player_match_stats %>% 
                group_by(player_id, position, champion_name) %>%
@@ -126,7 +118,7 @@ f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat
                        scale_x_continuous(expand = c(0, 0), limits = c(0, NA),) + 
                        scale_y_continuous(expand = c(0, 0), limits = c(0, NA)),
                      hovertemplate = "<i>xd</i>") %>%
-        layout(legend=list(title=list(text='Compareing:',font = list(color = "#c8aa6e"))))
+        layout(legend=list(title=list(text='Comparison:',font = list(color = "#c8aa6e"))))
       ##882a2e
       #values = c("#0ac8b9","#005a82"))) 
     } else if (type=="Chronologically") {
@@ -188,7 +180,6 @@ f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat
   gg <- gg  %>%
     layout(
       title = list(text =  chart_title),
-      # margin = list(autoexpand = FALSE),
       font = list(
         size = 12,
         color = "#c8aa6e"
@@ -196,95 +187,9 @@ f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat
       xaxis = list(title = "",tickfont = list(color = "#5b5a56"),color = "#c8aa6e", showgrid = TRUE, gridcolor = "#c8aa6e35", zeroline = TRUE, showline = TRUE,rangemode="tozero"),
       yaxis = list(title = "",tickfont = list(color = "#5b5a56"),color = "#c8aa6e", showgrid = TRUE, gridcolor = "#c8aa6e35", zeroline = TRUE, showline = TRUE,rangemode="tozero"),
       paper_bgcolor = "rgba(0,0,0,0)",
-      plot_bgcolor = "rgba(0,0,0,0)")
+      plot_bgcolor = "rgba(0,0,0,0)"
+      ) %>%
+    config(displayModeBar = FALSE, staticPlot = TRUE)
+
   return(gg)
 }
-
-
-# server <- function(input, output) {
-#   # POPRAWIĆ FILTROWANIE PO GRACZU W dynamicinput,dynamicinput2, myStatsReactive
-#   output$dynamicInput <- renderUI({
-#     myStatsPosition <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
-#     if (nrow(myStatsPosition)==0) {
-#       selectInput(inputId = "id1",
-#                   label = "Champion",
-#                   choices = c("None"))
-#     } else {
-#       selectInput(inputId = "id1",label = "Champion", choices = c("All",unique(unlist(myStatsPosition$champion_name))))
-#     }
-#   })
-
-#   output$dynamicInput2 <- renderUI({
-#     if (input$type=="Density") {
-#       myStatsPosition <- df_item_champ %>% filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner) %>% select(puuid)),position==input$Position)
-#       if (nrow(myStatsPosition)==0) {
-#         selectInput(inputId = "compare",
-#                     label = "Compare with:",
-#                     choices = c("None"))
-#       } else {
-#         champs <- unique(unlist(myStatsPosition$champion_name))
-#         if (input$id1=="All" | input$id1=="None") {
-#           selectInput(inputId = "compare", label = "Compare with:", choices = c("Don't"))
-#         } else {
-#           selectInput(inputId = "compare", label = "Compare with:", choices = c("Don't","All",champs[champs != input$id1]))
-#         }
-#       }
-#     }
-#   })
-
-
-#   output$DmgPerDeath <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"DmgPerDeath",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"DmgPerDeath")
-#     }
-#   })
-
-#   output$kill_participation <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kill_participation",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kill_participation")
-#     }
-#   })
-
-#   output$MinionsPerMinute <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"MinionsPerMinute",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"MinionsPerMinute")
-#     }
-#   })
-
-#   output$Kda <- renderPlotly({
-#     if (input$type=='Density') {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kda",input$compare)
-#     } else {
-#       f_overall_stats_plot(input$summoner,input$Position,input$id1,input$type,"kda")
-#     }
-#   })
-# }
-
-# ui <- fluidPage(titlePanel("Title"),
-
-#                 fluidRow(
-#                   column(4,
-#                          selectInput(inputId = "summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-#                          selectInput(inputId = "Position",label = "Position",
-#                                      choices = c("TOP","JUNGLE","MIDDLE","BOTTOM","UTILITY"),selected = "BOTTOM"),
-#                          uiOutput("dynamicInput"),
-#                          uiOutput("dynamicInput2"),
-#                          selectInput(inputId = "type", label = "Type:",choices = c("Density","Chronologically"))),
-#                   column(4,
-#                          plotlyOutput("DmgPerDeath"),
-#                          plotlyOutput("MinionsPerMinute")
-#                   ),
-#                   column(4,
-#                          plotlyOutput("kill_participation"),
-#                          plotlyOutput("Kda")))
-
-# )
-
-# runApp(shinyApp(ui,server))
-
