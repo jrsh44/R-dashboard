@@ -1,7 +1,6 @@
 # # For testing purposes only
 # library(dplyr)
 # library(plotly)
-# library(lubridate)
 # df_matches <- read.csv("./db/matches.csv")
 # puuid_Jan <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
 # puuid_Bartek <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
@@ -15,7 +14,7 @@ f_plot_time <- function(player){
         color <- "#4F6F52"
     } else if (player == "Bartek"){
         player_puuid <- puuid_Bartek
-        color <- "#c99b3f"
+        color <- "#f6bb45"
     } else if (player == "Mateusz"){
         player_puuid <- puuid_Mateusz
         color <- "#005a82"
@@ -65,18 +64,18 @@ f_plot_time <- function(player){
             title = "", 
             showgrid = TRUE, 
             gridcolor = "#c8aa6e35", 
-            tickfont = list(size = 14),
+            tickfont = list(size = 14)
         ),
         paper_bgcolor = "rgba(0,0,0,0)",
         plot_bgcolor = "rgba(0,0,0,0)",
         font = list(
             size = 14,
             color = "#c8aa6e"
-        ),
+        )
     ) %>%
     config(displayModeBar = FALSE, staticPlot = TRUE)
 
     return(plot)
 }
 
-# f_plot_time(puuid_Bartek)
+# f_plot_time(puuid_borycki)
