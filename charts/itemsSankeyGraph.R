@@ -6,19 +6,19 @@
 # library(networkD3)
 # source("./db/items.R")
 # df_player_match_stats <- read.csv("./db/playerMatchStats.csv")
-# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
-# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
-# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
+# puuid_Jan <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_Bartek <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_Mateusz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
 
 f_items_sankey_graph  <-  function(player){
 
-  if (player == "Cwalina") {
-    player_puuid <- puuid_cwalina
-  } else if (player == "Borycki") {
-    player_puuid <- puuid_borycki
-  } else if (player == "Jarosz") {
-    player_puuid <- puuid_jarosz
+  if (player == "Jan") {
+    player_puuid <- puuid_Jan
+  } else if (player == "Bartek") {
+    player_puuid <- puuid_Bartek
+  } else if (player == "Mateusz") {
+    player_puuid <- puuid_Mateusz
   } else {
     stop("Error: Invalid player_puuid.")
   }
@@ -93,4 +93,4 @@ f_items_sankey_graph  <-  function(player){
 
 
 
-# f_items_sankey_graph("Cwalina")
+# f_items_sankey_graph("Jan")

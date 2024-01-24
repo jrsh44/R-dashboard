@@ -20,7 +20,7 @@ source("./charts/playerOverallStatsChart.R")
 source("./charts/timePlayChart.R")
 
 ui <- navbarPage(
-  title = tags$a("ProLeague", id = "navbar-title", href = "https://github.com/jrsh44/R-dashboard"),
+  title = tags$a("liGGa", id = "navbar-title", href = "https://github.com/jrsh44/R-dashboard"),
 
   # ABOUT PAGE
   tabPanel(
@@ -28,8 +28,31 @@ ui <- navbarPage(
     tags$div(
       class = "about-container",
       tags$div(class = "typoH5", "Informacje o projekcie"),
-      tags$div(class = "typoH1", "ProLeague"),
+      tags$div(class = "typoH1", "League of Legends Stats"),
       tags$img(class = "tab4-decorator-lg", src = "assets/decorator-hr-lg.png"),
+      tags$div(class = "tab-about-content",
+        tags$div(class = "typoBodyBold", 
+        "Projekt ma na celu wyciągnięcie wniosków/ przeanalizowanie zarówno wyborów gracza co do postaci , przedmiotów i czasu rozpoczęcia meczu  jak i jego performane w trakcie rozgrywki oraz uzyskanie informacji grając, którymi postaciami gracz radzi sobie najlepiej.
+Dostęp do danych z gier został uzyskanych poprzez interfejs", 
+          tags$a("API", href ="https://developer.riotgames.com/")
+        )
+      ),
+      tags$div(class = "typoH2", "Twórcy"),
+      tags$img(class = "tab-credits-decorator", src = "assets/decorator-hr.png"),
+      tags$div(class = "tab-about-credits", 
+        tags$div(class = "tab-about-credits-item",
+          tags$img(class = "tab-about-credits-img", src = "assets/janek.png"),
+          tags$div(class = "tab-about-credits-text", "Jan Cwalina")
+        ),
+        tags$div(class = "tab-about-credits-item",
+          tags$img(class = "tab-about-credits-img", src = "assets/mati.png"),
+          tags$div(class = "tab-about-credits-text", "Mateusz Jarosz")
+        ),
+        tags$div(class = "tab-about-credits-item",
+          tags$img(class = "tab-about-credits-img", src = "assets/bartek.png"),
+          tags$div(class = "tab-about-credits-text", "Bartłomiej Borycki")
+        )
+      )
     )
   ),
 
@@ -69,7 +92,7 @@ ui <- navbarPage(
             selectInput(
               inputId = "t1_player",
               label = "Gracz:",
-              choices = c("Cwalina", "Borycki", "Jarosz")
+              choices = c("Jan", "Bartek", "Mateusz")
             ),
             selectInput(
               inputId = "t1_stat",
@@ -98,7 +121,7 @@ ui <- navbarPage(
             tags$div(class = "typoBodyBold", "Każdy z nas ma wiele różnych obowiązków takich jak studia czy praca, ale łączy nas fakt, że zawsze znajdziemy czas, aby pograć w Ligę. Poniższa heatmapa prezentuje kiedy najczęściej zdarza nam się grać w przeciągu całego tygodnia.")
           ),
           tags$div(class = "tab1-time-button-wrapper", 
-            selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Cwalina","Borycki","Jarosz")),
+            selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Jan","Bartek","Mateusz")),
           ),
         ),
         tags$div(class = "tab-horizontal-chart-wrapper",
@@ -142,9 +165,9 @@ ui <- navbarPage(
                     ),
             selectInput(
                       inputId = "t2_map_player",
-                      label = "Summoner:",
-                      choices = c("Cwalina", "Borycki", "Jarosz"),
-                      selected = "Borycki"
+                      label = "Gracz:",
+                      choices = c("Jan", "Bartek", "Mateusz"),
+                      selected = "Bartek"
                     ),
             uiOutput("t2_dynamic_input")
             ),
@@ -170,7 +193,7 @@ ui <- navbarPage(
             ),
           tags$div(class = "typoBodyBold", "Ze względu na możliwość wyboru jednej z pięciu ról (pozycji) oraz jednego z około 160 championów określenie wpływu na przebieg gry jest co najmniej bardzo trudnym zadaniem. Wraz z zespołem ustaliliśmy jednak 4 statystyki mogące stanowić o poziomie gracza."),
           tags$div(class = "tab-adv-buttons",
-            selectInput(inputId = "summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+            selectInput(inputId = "summoner",label = "Gracz:", choices = c("Jan","Bartek","Mateusz")),
             uiOutput("t3_dynamic_input_0"),
             uiOutput("t3_dynamic_input"),
             uiOutput("t3_dynamic_input2"),
@@ -193,7 +216,7 @@ ui <- navbarPage(
             tags$div(class = "typoBodyBold", "Poprzez zabójstwa, wykonywanie zadań, niszczenie budowli przeciwnika czy 'farmienie' minionów gracz otrzymuje złoto, które następnie może być wymienione w sklepie na przedmioty. Najcenniejsze, oznaczone tagiem 'Mythic' dają unikalne wzmocnienia. Z tego względu każdy przywoływacz może używać tylko 1 przedmiotu mitycznego w danym momencie. Ze względu na umiejętności postaci i ich użyteczność w różnych aspektach rozgrywki, pewne przedmioty są szczególnie sugerowane pewnym klasom championów, co obrazuje poniższy wykres. Pierwszy węzeł wykresu ma formę legendy.")
           ),
           tags$div(class = "tab3-sankey-button-wrapper", 
-            selectInput(inputId = "sankey_summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+            selectInput(inputId = "sankey_summoner",label = "Gracz:", choices = c("Jan","Bartek","Mateusz")),
           ),
         ),
         tags$div(class = "tab3-sankey-legend-wrapper",

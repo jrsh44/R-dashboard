@@ -112,7 +112,7 @@ mythic_items_id <- left_join(items_normal %>% filter(item_name %in% mythic_items
 #boots <- c(3006,3009,3020,3047,3111,3117,3158)
 
 
-summoner <- data.frame(name = c("Cwalina","Borycki","Jarosz"),
+summoner <- data.frame(name = c("Jan","Bartek","Mateusz"),
                        puuid = c( "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA",
                                   "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA",
                                   "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"))

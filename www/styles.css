@@ -332,12 +332,6 @@ rect {
   max-width: 1000px;
   margin: 0;
 }
-/* TAB 4  */
-
-.tab4-decorator-lg {
-  display: flex;
-  width: 550px;
-}
 
 rect.bg {
   fill: var(--bg-color-light) !important;
@@ -515,4 +509,48 @@ rect.bg {
   justify-content: center;
   background-color: var(--bg-color-light);
   padding: 20px;
+}
+
+.tab-about-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+  margin-bottom: 88px;
+}
+
+.tab-about-credits {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.tab-about-credits-img {
+  display: flex;
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tab-about-credits-text {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: "Beaufort";
+  margin-left: 12px;
+  font-size: 16pt;
+  line-height: 20pt;
+  color: var(--gold_1);
+}
+
+.tab4-decorator-lg {
+  display: flex;
+  width: 550px;
+}
+
+.tab-credits-decorator {
+  margin: 8px;
+  display: flex;
+  width: 250px;
 }

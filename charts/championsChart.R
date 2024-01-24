@@ -2,22 +2,22 @@
 # library(plotly)
 # library(dplyr)
 # df_player_match_stats <- read.csv("./db/playerMatchStats.csv")
-# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
-# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
-# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
+# puuid_Jan <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_Bartek <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_Mateusz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
 f_plot_champions <- function(player, stat, champ_amount = 5){
     
 
     # Player names and colors
-    if(player == "Cwalina"){
-        player_puuid <- puuid_cwalina
+    if(player == "Jan"){
+        player_puuid <- puuid_Jan
         color <- "#4F6F52"
-    } else if (player == "Borycki"){
-        player_puuid <- puuid_borycki
+    } else if (player == "Bartek"){
+        player_puuid <- puuid_Bartek
         color <- "#f6bb45"
-    } else if (player == "Jarosz"){
-        player_puuid <- puuid_jarosz
+    } else if (player == "Mateusz"){
+        player_puuid <- puuid_Mateusz
         color <- "#005a82"
     } else {
         stop("Error: Invalid player_puuid.")
@@ -92,4 +92,4 @@ f_plot_champions <- function(player, stat, champ_amount = 5){
     return(plot_champions)
 }
 
-# f_plot_champions("Jarosz", "kda")
+# f_plot_champions("Mateusz", "kda")
