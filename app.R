@@ -20,8 +20,19 @@ source("./charts/playerOverallStatsChart.R")
 source("./charts/timePlayChart.R")
 
 ui <- navbarPage(
-  title = "League of Legends - stats",
-  
+  title = tags$a("ProLeague", id = "navbar-title", href = "https://github.com/jrsh44/R-dashboard"),
+
+  # ABOUT PAGE
+  tabPanel(
+    "O projekcie",
+    tags$div(
+      class = "about-container",
+      tags$div(class = "typoH5", "Informacje o projekcie"),
+      tags$div(class = "typoH1", "ProLeague"),
+      tags$img(class = "tab4-decorator-lg", src = "assets/decorator-hr-lg.png"),
+    )
+  ),
+
   # Zakładka 1
   tabPanel(
     "Ogólne",
@@ -39,9 +50,9 @@ ui <- navbarPage(
         tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
       tags$div(
-        class = "tab-champ-container",
+        class = "tab-section",
         tags$div(
-          class = "tab-champ-wrapper",
+          class = "tab-section-content",
           tags$div(
             class = "tab-title-text",
             tags$div(class = "typoH2", "Porównanie championów"),
@@ -73,7 +84,7 @@ ui <- navbarPage(
             ),
           ),
         ),
-        tags$div(class = "tab-champ-wrapper",
+        tags$div(class = "tab-section-content",
           plotlyOutput("t1_champions_chart"),
         ),
       ),
@@ -107,9 +118,9 @@ ui <- navbarPage(
         tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
       tags$div(
-        class = "tab-map-container",
+        class = "tab-section",
         tags$div(
-          class = "tab-map-info-wrapper",
+          class = "tab-section-content",
           tags$div(
             class = "tab-title-text",
             tags$div(class = "typoH2", "Aktywność na mapie"),
@@ -151,20 +162,21 @@ ui <- navbarPage(
         tags$div(class = "typoH1", "Szczegółowe statystyki"),
         tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
-      tags$div(class = "tab-adv-container", 
+      tags$div(class = "tab-section", 
         tags$div(class = "tab-adv-wrapper",
           tags$div(class = "tab-title-text",
             tags$div(class = "typoH2", "Statystyki Przywoływacza"),
             tags$img(class = "tab-decorator", style="width: 350px;", src = "assets/decorator-hr.png"),
             ),
           tags$div(class = "typoBodyBold", "Ze względu na możliwość wyboru jednej z pięciu ról (pozycji) oraz jednego z około 160 championów określenie wpływu na przebieg gry jest co najmniej bardzo trudnym zadaniem. Wraz z zespołem ustaliliśmy jednak 4 statystyki mogące stanowić o poziomie gracza."),
-          selectInput(inputId = "summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
-          uiOutput("t3_dynamic_input_0"),
-          uiOutput("t3_dynamic_input"),
-          uiOutput("t3_dynamic_input2"),
-          selectInput(inputId = "type", label = "Typ:",choices = c("Density","Chronologically")),
+          tags$div(class = "tab-adv-buttons",
+            selectInput(inputId = "summoner",label = "Summoner:", choices = c("Cwalina","Borycki","Jarosz")),
+            uiOutput("t3_dynamic_input_0"),
+            uiOutput("t3_dynamic_input"),
+            uiOutput("t3_dynamic_input2"),
+            selectInput(inputId = "type", label = "Typ:",choices = c("Density","Chronologically")))
         ),
-        tags$div(class = "tab3-grid-container",
+        tags$div(class = "tab-adv-grid-container",
           plotlyOutput("t3_dmg_per_death"),
           plotlyOutput("t3_minions_per_minute"),
           plotlyOutput("t3_kill_participation"),
@@ -218,17 +230,6 @@ ui <- navbarPage(
           sankeyNetworkOutput("t3_sankey")
         ),
       )
-    )
-  ),
-  
-  # ABOUT PAGE
-  tabPanel(
-    "About",
-    tags$div(
-      class = "about-container",
-      tags$div(class = "typoH5", "League of Legends - Analise"),
-      tags$div(class = "typoH1", "Informacje o projekcie"),
-      tags$img(class = "tab4-decorator-lg", src = "assets/decorator-hr-lg.png"),
     )
   )
 )
