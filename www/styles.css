@@ -69,6 +69,7 @@ rect {
   font-size: 28pt;
   line-height: 32pt;
   color: var(--gold_1);
+  text-align: center;
 }
 
 .typoH3 {
@@ -146,26 +147,33 @@ rect {
   gap: 4px;
 }
 
-.tab-map-container,
-.tab-champ-container,
-.tab-adv-container {
+.tab-section {
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
-  justify-content: space-between;
   padding: 32px;
+  gap: 12px;
   background-color: var(--bg-color-light);
 }
 
-.tab-champ-wrapper {
+.tab-section-content {
   display: flex;
-  width: 48%;
   flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 800px;
+  min-width: 500px;
   gap: 12px;
 }
 
 .tab-champ-buttons {
   display: flex;
   justify-content: space-evenly;
+}
+
+.tab-champ-buttons > div {
+  width: 45% !important;
 }
 
 .tab-decorator-lg {
@@ -211,21 +219,6 @@ rect {
 }
 
 /* TAB 2  */
-
-.tab-map-info-wrapper {
-  display: flex;
-  width: 55%;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.tab-map-wrapper {
-  display: flex;
-  width: 50%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 
 .tab-map-buttons {
   display: flex;
@@ -315,15 +308,29 @@ rect {
 
 .tab-adv-wrapper {
   display: flex;
-  width: 25%;
   flex-direction: column;
-  gap: 12px;
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 800px;
+  min-width: 350px;
+  gap: 24px;
 }
-/* TAB 4  */
 
-.tab4-decorator-lg {
+.tab-adv-buttons {
   display: flex;
-  width: 550px;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.tab-adv-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  min-width: 850px;
+  max-width: 1000px;
+  margin: 0;
 }
 
 rect.bg {
@@ -342,27 +349,35 @@ rect.bg {
 
 .navbar-header {
   display: flex;
-  width: 40%;
 }
 
-.navbar-brand {
+.navbar-brand > a {
   font-family: "Beaufort";
   font-size: 28pt;
   line-height: 32pt;
-  color: var(--gold_1);
+  color: var(--grey_2) !important;
+  transition: 0.4s ease-in-out;
+}
+
+.navbar-brand > a:hover {
+  color: var(--gold_2) !important;
+  transition: 0.4s ease-in-out;
+  text-decoration-line: none;
 }
 
 .navbar-nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 12px;
   align-items: center;
   padding: 0px 16px;
-  width: 60%;
+  width: 100%;
 }
 
 .navbar-nav > li > a {
   color: var(--gold_2);
   font-family: "Beaufort";
+  width: fit-content;
   font-size: 14pt;
   line-height: 20pt;
   padding: 10px 30px;
@@ -374,7 +389,7 @@ rect.bg {
   color: var(--grey_2);
   border-bottom: 2px solid var(--gold_2);
   border-right: 2px solid var(--gold_2);
-  transition: 0.4s;
+  transition: 0.4s ease-in-out;
 }
 
 .navbar-default .navbar-nav > .active > a,
@@ -487,10 +502,55 @@ rect.bg {
 .about-container {
   display: flex;
   justify-self: center;
+  gap: 4px;
   margin: 0 auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: var(--bg-color-light);
   padding: 20px;
+}
+
+.tab-about-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+  margin-bottom: 88px;
+}
+
+.tab-about-credits {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.tab-about-credits-img {
+  display: flex;
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tab-about-credits-text {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: "Beaufort";
+  margin-left: 12px;
+  font-size: 16pt;
+  line-height: 20pt;
+  color: var(--gold_1);
+}
+
+.tab4-decorator-lg {
+  display: flex;
+  width: 550px;
+}
+
+.tab-credits-decorator {
+  margin: 8px;
+  display: flex;
+  width: 250px;
 }

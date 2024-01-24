@@ -4,9 +4,9 @@
 # library(jpeg)
 # library(base64enc)
 # df_participant_events <- read.csv("./db/participantEvents.csv")
-# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
-# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
-# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
+# puuid_Jan <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_Bartek <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_Mateusz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
 f_animated_map <- function(player,
            stats,
@@ -19,12 +19,12 @@ f_animated_map <- function(player,
     # win - TRUE, FALSE, c(TRUE,FALSE)
     # team_id - c(100,200)
         
-  if (player == "Cwalina") {
-    player_puuid <- puuid_cwalina
-  } else if (player == "Borycki") {
-    player_puuid <- puuid_borycki
-  } else if (player == "Jarosz") {
-    player_puuid <- puuid_jarosz
+  if (player == "Jan") {
+    player_puuid <- puuid_Jan
+  } else if (player == "Bartek") {
+    player_puuid <- puuid_Bartek
+  } else if (player == "Mateusz") {
+    player_puuid <- puuid_Mateusz
   } else {
     stop("Error: Invalid player_puuid.")
   }
@@ -95,4 +95,4 @@ f_animated_map <- function(player,
     return(plot)
   }
 
-# f_animated_map("Borycki",c("death","kill"),c("Orianna"),c("MIDDLE"),win=c(T,F),team_id = c(200,100))
+# f_animated_map("Bartek",c("death","kill"),c("Orianna"),c("MIDDLE"),win=c(T,F),team_id = c(200,100))

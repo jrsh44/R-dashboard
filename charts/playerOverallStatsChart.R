@@ -3,9 +3,9 @@
 # library(tidyverse)
 # library(shiny)
 # library(plotly)
-# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
-# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
-# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
+# puuid_Jan <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_Bartek <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_Mateusz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
 df_item_champ <- df_player_match_stats %>%
   inner_join(df_player_match_stats %>% 
@@ -15,7 +15,7 @@ df_item_champ <- df_player_match_stats %>%
                select(player_id, champion_name),
              by = c('player_id','position','champion_name'))
 
-summoner <- data.frame(name = c("Cwalina","Borycki","Jarosz"),
+summoner <- data.frame(name = c("Jan","Bartek","Mateusz"),
                        puuid = c( "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA",
                                   "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA",
                                   "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"))
@@ -26,12 +26,12 @@ f_stats_position_reactive <- function(player_name, summoner_position, id1, type,
     id1 = "All"
   }
   
-  if (player_name == "Cwalina") {
-    player_puuid <- puuid_cwalina
-  } else if (player_name == "Borycki") {
-    player_puuid <- puuid_borycki
-  } else if (player_name == "Jarosz") {
-    player_puuid <- puuid_jarosz
+  if (player_name == "Jan") {
+    player_puuid <- puuid_Jan
+  } else if (player_name == "Bartek") {
+    player_puuid <- puuid_Bartek
+  } else if (player_name == "Mateusz") {
+    player_puuid <- puuid_Mateusz
   } else {
     stop("Error: Invalid player_puuid.")
   }
@@ -118,7 +118,8 @@ f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat
                        scale_x_continuous(expand = c(0, 0), limits = c(0, NA),) + 
                        scale_y_continuous(expand = c(0, 0), limits = c(0, NA)),
                      hovertemplate = "<i>xd</i>") %>%
-        layout(legend=list(title=list(text='Comparison:',font = list(color = "#c8aa6e"))))
+        layout(legend=list(title=list(text='Comparison:',font = list(color = "#c8aa6e")))) %>%
+        config(staticPlot = TRUE)
       ##882a2e
       #values = c("#0ac8b9","#005a82"))) 
     } else if (type=="Chronologically") {
@@ -189,7 +190,7 @@ f_overall_stats_plot <- function(player_name, summoner_position, id1, type, stat
       paper_bgcolor = "rgba(0,0,0,0)",
       plot_bgcolor = "rgba(0,0,0,0)"
       ) %>%
-    config(displayModeBar = FALSE, staticPlot = TRUE)
+    config(displayModeBar = FALSE)
 
   return(gg)
 }

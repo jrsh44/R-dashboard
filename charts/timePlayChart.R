@@ -3,21 +3,21 @@
 # library(plotly)
 # library(lubridate)
 # df_matches <- read.csv("./db/matches.csv")
-# puuid_cwalina <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
-# puuid_borycki <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
-# puuid_jarosz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
+# puuid_Jan <- "zwlLeN31xQwaocZE1bEC_i4Y91Rr6-VDrwrkPCi2G-SX889BGKzpT3IdtxhhdxncCX9cMjTgnoekAA" 
+# puuid_Bartek <- "sGIXvsl6UBP_Xsn8GJuJONeVj6H5ScomqSMsNMC6dI-E6A3mRDu1aPZb83rzHw6-_ExYKI_8W2xDTA"
+# puuid_Mateusz <- "n_Qfzo6Yhpupwck98rbPTHI23QyxqF17iUwCkgz_6WApNw39aFp5bhbq93pFvLICoBGCviFqQvEQag"
 
 f_plot_time <- function(player){
 
     # Player names and colors
-    if(player == "Cwalina"){
-        player_puuid <- puuid_cwalina
+    if(player == "Jan"){
+        player_puuid <- puuid_Jan
         color <- "#4F6F52"
-    } else if (player == "Borycki"){
-        player_puuid <- puuid_borycki
+    } else if (player == "Bartek"){
+        player_puuid <- puuid_Bartek
         color <- "#c99b3f"
-    } else if (player == "Jarosz"){
-        player_puuid <- puuid_jarosz
+    } else if (player == "Mateusz"){
+        player_puuid <- puuid_Mateusz
         color <- "#005a82"
     } else {
         stop("Error: Invalid player_puuid.")
@@ -29,7 +29,7 @@ f_plot_time <- function(player){
         mutate(day_of_week = wday(game_creation, label = TRUE, abbr = FALSE)) %>%
         mutate(hour = hour(game_creation)) %>%
         group_by(day_of_week, hour) %>%
-        summarise(gamesPlayed = n())
+        summarise(Liczba_gier = n())
 
     all_combinations <- expand.grid(
         day_of_week = unique(player_data$day_of_week),
@@ -49,10 +49,9 @@ f_plot_time <- function(player){
         data = player_data,
         y = ~day_of_week,
         x = ~hour,
-        z = ~gamesPlayed, 
+        z = ~Liczba_gier, 
         colorscale = color_scale,
         type = "heatmap",
-        showscale = FALSE,
         opacity = 0.85) %>%
     layout(
         xaxis = list(
@@ -66,7 +65,7 @@ f_plot_time <- function(player){
             title = "", 
             showgrid = TRUE, 
             gridcolor = "#c8aa6e35", 
-            tickfont = list(size = 14)
+            tickfont = list(size = 14),
         ),
         paper_bgcolor = "rgba(0,0,0,0)",
         plot_bgcolor = "rgba(0,0,0,0)",
@@ -74,11 +73,10 @@ f_plot_time <- function(player){
             size = 14,
             color = "#c8aa6e"
         ),
-        showlegend = FALSE
     ) %>%
     config(displayModeBar = FALSE, staticPlot = TRUE)
 
     return(plot)
 }
 
-# f_plot_time(puuid_borycki)
+# f_plot_time(puuid_Bartek)

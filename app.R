@@ -20,8 +20,42 @@ source("./charts/playerOverallStatsChart.R")
 source("./charts/timePlayChart.R")
 
 ui <- navbarPage(
-  title = "League of Legends - stats",
-  
+  title = tags$a("liGGa", id = "navbar-title", href = "https://github.com/jrsh44/R-dashboard"),
+
+  # ABOUT PAGE
+  tabPanel(
+    "O projekcie",
+    tags$div(
+      class = "about-container",
+      tags$div(class = "typoH5", "Informacje o projekcie"),
+      tags$div(class = "typoH1", "League of Legends Stats"),
+      tags$img(class = "tab4-decorator-lg", src = "assets/decorator-hr-lg.png"),
+      tags$div(class = "tab-about-content",
+        tags$div(class = "typoBodyBold", 
+        "Projekt ma na celu wyciągnięcie wniosków/ przeanalizowanie zarówno wyborów gracza co do postaci , przedmiotów i czasu rozpoczęcia meczu  jak i jego performane w trakcie rozgrywki oraz uzyskanie informacji grając, którymi postaciami gracz radzi sobie najlepiej.
+Dostęp do danych z gier został uzyskanych poprzez interfejs", 
+          tags$a("API", href ="https://developer.riotgames.com/")
+        )
+      ),
+      tags$div(class = "typoH2", "Twórcy"),
+      tags$img(class = "tab-credits-decorator", src = "assets/decorator-hr.png"),
+      tags$div(class = "tab-about-credits", 
+        tags$div(class = "tab-about-credits-item",
+          tags$img(class = "tab-about-credits-img", src = "assets/janek.png"),
+          tags$div(class = "tab-about-credits-text", "Jan Cwalina")
+        ),
+        tags$div(class = "tab-about-credits-item",
+          tags$img(class = "tab-about-credits-img", src = "assets/mati.png"),
+          tags$div(class = "tab-about-credits-text", "Mateusz Jarosz")
+        ),
+        tags$div(class = "tab-about-credits-item",
+          tags$img(class = "tab-about-credits-img", src = "assets/bartek.png"),
+          tags$div(class = "tab-about-credits-text", "Bartłomiej Borycki")
+        )
+      )
+    )
+  ),
+
   # Zakładka 1
   tabPanel(
     "Ogólne",
@@ -39,9 +73,9 @@ ui <- navbarPage(
         tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
       tags$div(
-        class = "tab-champ-container",
+        class = "tab-section",
         tags$div(
-          class = "tab-champ-wrapper",
+          class = "tab-section-content",
           tags$div(
             class = "tab-title-text",
             tags$div(class = "typoH2", "Porównanie championów"),
@@ -50,7 +84,7 @@ ui <- navbarPage(
           ),
           tags$div(
             class = "typoBodyBold",
-            "Obecnie w grze dostępnych jest ponad 150 postaci podzielonych na różne kategorie, takie jak zabójcy, strażnicy, magowie czy strzelcy. Stojąc przed takim szerokim wyborem istotne staje się określenie, którym bohaterem radzimy sobie najlepiej,"
+            "Obecnie w grze dostępnych jest ponad 160 postaci podzielonych na różne kategorie, takie jak zabójcy, strażnicy, magowie czy strzelcy. Stojąc przed tak szerokim wyborem istotne staje się określenie, którym bohaterem radzimy sobie najlepiej,"
           ),
           tags$div(class = "typoBody", textOutput("t1_stat_desc")),
           tags$div(
@@ -58,7 +92,7 @@ ui <- navbarPage(
             selectInput(
               inputId = "t1_player",
               label = "Gracz:",
-              choices = c("Cwalina", "Borycki", "Jarosz")
+              choices = c("Jan", "Bartek", "Mateusz")
             ),
             selectInput(
               inputId = "t1_stat",
@@ -73,7 +107,7 @@ ui <- navbarPage(
             ),
           ),
         ),
-        tags$div(class = "tab-champ-wrapper",
+        tags$div(class = "tab-section-content",
           plotlyOutput("t1_champions_chart"),
         ),
       ),
@@ -87,7 +121,7 @@ ui <- navbarPage(
             tags$div(class = "typoBodyBold", "Każdy z nas ma wiele różnych obowiązków takich jak studia czy praca, ale łączy nas fakt, że zawsze znajdziemy czas, aby pograć w Ligę. Poniższa heatmapa prezentuje kiedy najczęściej zdarza nam się grać w przeciągu całego tygodnia.")
           ),
           tags$div(class = "tab1-time-button-wrapper", 
-            selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Cwalina","Borycki","Jarosz")),
+            selectInput(inputId = "t1_player_time",label = "Gracz:", choices = c("Jan","Bartek","Mateusz")),
           ),
         ),
         tags$div(class = "tab-horizontal-chart-wrapper",
@@ -107,9 +141,9 @@ ui <- navbarPage(
         tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
       tags$div(
-        class = "tab-map-container",
+        class = "tab-section",
         tags$div(
-          class = "tab-map-info-wrapper",
+          class = "tab-section-content",
           tags$div(
             class = "tab-title-text",
             tags$div(class = "typoH2", "Aktywność na mapie"),
@@ -118,7 +152,7 @@ ui <- navbarPage(
           ),
           tags$div(
             class = "typoBodyBold",
-            "Podczas rozgrywki, każdy gracz jest przypisany do jednej z pięciu pozycji. Zobaczmy, jak wygląda nasza aktywność, mierzona w liczbe zabójstw, śmierci i asyst, w różnych częściach mapy, w zależności od pozycji na której gramy"
+            "Podczas rozgrywki, każdy gracz jest przypisany do jednej z pięciu pozycji. Zobaczmy, jak wygląda nasza aktywność, mierzona w łącznej liczbe zabójstw, śmierci i asyst, w różnych częściach mapy, w zależności od pozycji na której gramy"
           ),
           tags$div(class = "typoBody", textOutput("t2_desc")),
           tags$div(
@@ -131,9 +165,9 @@ ui <- navbarPage(
                     ),
             selectInput(
                       inputId = "t2_map_player",
-                      label = "Summoner:",
-                      choices = c("Cwalina", "Borycki", "Jarosz"),
-                      selected = "Borycki"
+                      label = "Gracz:",
+                      choices = c("Jan", "Bartek", "Mateusz"),
+                      selected = "Bartek"
                     ),
             uiOutput("t2_dynamic_input")
             ),
@@ -151,39 +185,38 @@ ui <- navbarPage(
         tags$div(class = "typoH1", "Szczegółowe statystyki"),
         tags$img(class = "tab-decorator-lg", src = "assets/decorator-hr-lg.png")
       ),
-      tags$div(class = "tab-adv-container", 
+      tags$div(class = "tab-section", 
         tags$div(class = "tab-adv-wrapper",
           tags$div(class = "tab-title-text",
             tags$div(class = "typoH2", "Statystyki Przywoływacza"),
             tags$img(class = "tab-decorator", style="width: 350px;", src = "assets/decorator-hr.png"),
             ),
-          tags$div(class = "typoBodyBold", "W League of Legends nie istnieje skala, która jednoznacznie potrafiłaby określić poziom umiejętności przywoływacza. Ze względu na możliwość wyboru jednej z pięciu ról (pozycji) oraz jednego z około 150 championów określenie wpływu na przebieg gry jest co najmniej bardzo trudnym zadaniem. Wraz z zespołem ustaliliśmy jednak 4 statystyki mogące stanowić o poziomie gracza."),
-          selectInput(inputId = "summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
-          uiOutput("t3_dynamic_input_0"),
-          uiOutput("t3_dynamic_input"),
-          uiOutput("t3_dynamic_input2"),
-          selectInput(inputId = "type", label = "Typ",choices = c("Density","Chronologically")),
+          tags$div(class = "typoBodyBold", "Ze względu na możliwość wyboru jednej z pięciu ról (pozycji) oraz jednego z około 160 championów określenie wpływu na przebieg gry jest co najmniej bardzo trudnym zadaniem. Wraz z zespołem ustaliliśmy jednak 4 statystyki mogące stanowić o poziomie gracza."),
+          tags$div(class = "tab-adv-buttons",
+            selectInput(inputId = "summoner",label = "Gracz:", choices = c("Jan","Bartek","Mateusz")),
+            uiOutput("t3_dynamic_input_0"),
+            uiOutput("t3_dynamic_input"),
+            uiOutput("t3_dynamic_input2"),
+            selectInput(inputId = "type", label = "Typ:",choices = c("Density","Chronologically")))
         ),
-        column(5,
+        tags$div(class = "tab-adv-grid-container",
           plotlyOutput("t3_dmg_per_death"),
-          plotlyOutput("t3_minions_per_minute")
-        ),
-        column(5,
+          plotlyOutput("t3_minions_per_minute"),
           plotlyOutput("t3_kill_participation"),
           plotlyOutput("t3_kda")
         )
       ),
       tags$div(class = "tab-vertical-container",
         tags$div(class = "tab-title-text",
-          tags$div(class = "typoH2", "Wybór championów i Itemów"),
+          tags$div(class = "typoH2", "Wybór postaci i przedmiotów"),
           tags$img(class = "tab-decorator", src = "assets/decorator-hr.png"),
           ),
         tags$div(class = "tab-vertical-desc-wrapper",
           tags$div(class = "tab3-sankey-text-wrapper", 
-            tags$div(class = "typoBodyBold", "Poprzez zabójstwa, wykonywanie zadań, niszczenie bódowli przeciwnika czy 'farmienie' minionów gracz otrzymuje złoto, które następnie może być wymienione w sklepie na przedmioty. Najcenniejsze, oznaczone tagiem 'Mythic' dają unikalne wzmocnienia. Z tego względu każdy przywoływacz może używać tylko 1 przedmiotu mitycznego w danym momencie. Ze względu na umiejętności postaci i ich użyteczność w różnych aspektach rozgrywki, pewne przedmioty są szczególnie sugerowane pewnym klasom championów, co obrazuje poniższy wykres.")
+            tags$div(class = "typoBodyBold", "Poprzez zabójstwa, wykonywanie zadań, niszczenie budowli przeciwnika czy 'farmienie' minionów gracz otrzymuje złoto, które następnie może być wymienione w sklepie na przedmioty. Najcenniejsze, oznaczone tagiem 'Mythic' dają unikalne wzmocnienia. Z tego względu każdy przywoływacz może używać tylko 1 przedmiotu mitycznego w danym momencie. Ze względu na umiejętności postaci i ich użyteczność w różnych aspektach rozgrywki, pewne przedmioty są szczególnie sugerowane pewnym klasom championów, co obrazuje poniższy wykres. Pierwszy węzeł wykresu ma formę legendy.")
           ),
           tags$div(class = "tab3-sankey-button-wrapper", 
-            selectInput(inputId = "sankey_summoner",label = "Summoner", choices = c("Cwalina","Borycki","Jarosz")),
+            selectInput(inputId = "sankey_summoner",label = "Gracz:", choices = c("Jan","Bartek","Mateusz")),
           ),
         ),
         tags$div(class = "tab3-sankey-legend-wrapper",
@@ -221,17 +254,6 @@ ui <- navbarPage(
         ),
       )
     )
-  ),
-  
-  # ABOUT PAGE
-  tabPanel(
-    "About",
-    tags$div(
-      class = "about-container",
-      tags$div(class = "typoH5", "League of Legends - Analise"),
-      tags$div(class = "typoH1", "Informacje o projekcie"),
-      tags$img(class = "tab4-decorator-lg", src = "assets/decorator-hr-lg.png"),
-    )
   )
 )
 
@@ -239,15 +261,15 @@ server <- function(input, output) {
   # Zakładka 1
   output$t1_stat_desc <- renderText({
     if (input$t1_stat == "Zabójstwa") {
-      "Liczba zabójstwa informuje o tym, ilu przeciwników udało nam się pokonać podczas rozgrywki. Im więcej zabójstw, tym silniejszy mamy wpływ na przebieg gry."
+      "Liczba zabójstw informuje o tym, ilu łącznie przeciwników udało nam się pokonać podczas rozgrywki daną postacią. Im więcej zabójstw, tym silniejszy mamy wpływ na przebieg gry."
     } else if (input$t1_stat == "Śmierci") {
-      "Liczba śmierci informuje o tym, ile razy bohater został pokonany przez przeciwników."
+      "Liczba śmierci informuje o tym, ile razy łącznie bohater został pokonany przez przeciwników grając danym championem."
     } else if (input$t1_stat == "Współczynnik KDA") {
       "Współczynnik KDA to suma zabójstw i asyst podzielona przez liczbę śmierci. Jest to miara efektywności gracza w walce."
     } else if (input$t1_stat == "Współczynnik zwycięstw") {
       "Współczynnik zwycięstw odzwierciedla procent wygranych gier spośród wszystkich rozegranych."
     } else if (input$t1_stat == "Liczba gier") {
-      "Liczba gier pozwala określić nie tylko popularność postaci, ale również doświadczenie gracza w jej obsłudze."
+      "Liczba gier rozegranych daną postacią pozwala określić nie tylko popularność postaci, ale również doświadczenie gracza w jej obsłudze."
     }
   })
   
@@ -323,7 +345,7 @@ server <- function(input, output) {
       output$t3_dynamic_input_0 <- renderUI({
         positions <- c("TOP","JUNGLE","MIDDLE","BOTTOM","UTILITY")
         myStatsPosition <-  unique((df_item_champ %>% dplyr::filter(player_id == as.vector(summoner %>% filter(name %in% input$summoner))))$position)
-        selectInput(inputId = "Position",label = "Pozycja",
+        selectInput(inputId = "Position",label = "Pozycja:",
                     choices = positions[positions %in% myStatsPosition])
         
       })
@@ -340,12 +362,12 @@ server <- function(input, output) {
       )
         if (nrow(myStatsPosition) == 0) {
           selectInput(inputId = "id1",
-                      label = "Champion",
+                      label = "Champion:",
                       choices = c("None"))
         } else {
           selectInput(
         inputId = "id1",
-        label = "Champion",
+        label = "Champion:",
         choices = c("All", unique(
           unlist(myStatsPosition$champion_name)
         ))
@@ -469,3 +491,8 @@ server <- function(input, output) {
 
 
 shinyApp(ui, server)
+
+
+
+
+
