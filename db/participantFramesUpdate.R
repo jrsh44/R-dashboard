@@ -1,5 +1,7 @@
 # This script is used to update the participantFrames.csv file with new matches for a given player.
 
+source("functionsAPI.R")
+
 # API calls
 ids <- get_match_ids(api_key, puuid, 100)
 match_timelines_list_unfiltered <- get_matches_timelines(api_key, ids, 1, 20)
