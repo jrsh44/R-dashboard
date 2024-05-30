@@ -1,5 +1,7 @@
 # This script is used to update the matches.csv file with new matches for a given player.
 
+source("functionsAPI.R")
+
 # API calls
 ids <- get_match_ids(api_key, puuid, 100)
 match_list_unfiltered <- get_matches(api_key, ids, 1, 20)
